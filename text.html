@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Phaser Example</title>
+    <script src="phaser.min.js"></script>
+</head>
+<body>
+    <script>
+
+        var config = {              //物件屬性
+            type: Phaser.AUTO,      //自動選擇為最好的渲染方式
+            width: 800,             //寬高設定
+            height: 600,
+            scene: {                
+                preload: preload,   //加載資料
+                create: create,     //創建畫面
+                update: update      //刷新畫面
+            }
+        };
+
+        var game = new Phaser.Game(config);//建立物件
+
+        function preload (){
+            //image-讀取圖片。命名為'sky'，並讀取資料夾中的圖片。
+            this.load.image('sky', 'assets/sky.png');
+            //spritesheet-精靈圖像，第三個的寬高是指定每个動畫幀的宽度和高度。
+            //this.load.spritesheet('dude', 'assets/dude.png',{ frameWidth: 32, frameHeight: 48 });
+    
+        }
+
+        function create (){
+            this.add.image(400, 300, 'sky');
+
+
+        }
+
+        function update (){
+        }
+    </script>
+</body>
+</html>
