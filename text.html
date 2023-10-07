@@ -81,10 +81,10 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             platforms.create(750, 220, 'ground');
 
 
-            player.setBounce(0.2);              //角色的物理反彈值
-            player.setCollideWorldBounds(true); //角色是否與邊界碰撞
-            player.body.setGravityY(300)        //給予角色重力
-            //this.physics.add.collider(player, platforms);//
+            player.setBounce(0.2);                          //角色的物理反彈值
+            player.setCollideWorldBounds(true);             //角色是否與邊界碰撞
+            player.body.setGravityY(300)                    //給予角色重力
+            this.physics.add.collider(player, platforms);   //讓2個物件(組)可以碰撞
 
             this.anims.create({     //創建動畫
                 key: 'left',        //名稱為left
