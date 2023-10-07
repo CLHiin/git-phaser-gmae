@@ -38,6 +38,13 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             type: Phaser.AUTO,      //自動選擇為最好的渲染方式
             width: 800,             //寬高設定
             height: 600,
+            physics: {
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 300 },
+                    debug: false
+                }
+            },
             scene: {                
                 preload: preload,   //加載資料
                 create: create,     //創建畫面
