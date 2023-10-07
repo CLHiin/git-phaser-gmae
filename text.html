@@ -73,7 +73,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             platforms = this.physics.add.staticGroup();//創建一個物理的靜態組件
 
             //利用這個組件創造一個實體(跟image不一樣)，利用setScale來選擇大小倍率(2倍)
-            platforms.create(400, 568, 'ground').setScale(5).refreshBody();
+            platforms.create(400, 568, 'ground').setScale(2).refreshBody();
             platforms.create(600, 400, 'ground');
             platforms.create(50, 250, 'ground');
             platforms.create(750, 220, 'ground');
