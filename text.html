@@ -69,25 +69,27 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
         }
 
         function create (){
-            platforms = this.physics.add.staticGroup();             //創建一個物理的靜態組件
-            cursors = this.input.keyboard.createCursorKeys();       //監聽按鍵
-            player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
-
-            player.setBounce(0.2);                          //角色的物理反彈值
-            player.setCollideWorldBounds(true);             //角色是否與邊界碰撞
-            player.body.setGravityY(300)                    //給予角色重力
-
             scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });  //放置文字
+
+            platforms = this.physics.add.staticGroup();             //創建一個物理的靜態組件
 
             //增加一個圖片放在0,0位置，定位點原本預設在圖片中心，但利用setOrigin後，我把繪製定位點設定到左上角。
             this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
-            //利用靜態組件創造一個實體，可利用setScale來調整大小倍率，縮放靜態物體時，要用refreshBody(雖然用不用好像都有效)。
+
+            scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });  //放置文字
+
+            //利用靜態組件創造一個實體，利用setScale來調整大小倍率。縮放靜態物體時，要用refreshBody(雖然用不用好像都有效)。
             platforms.create(400, 568, 'ground').setScale(2).refreshBody();
             platforms.create(600, 400, 'ground');
             platforms.create(50, 250, 'ground');
             platforms.create(750, 220, 'ground');
 
+            player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
+
+            player.setBounce(0.2);                          //角色的物理反彈值
+            player.setCollideWorldBounds(true);             //角色是否與邊界碰撞
+            player.body.setGravityY(300)                    //給予角色重力
 
             this.anims.create({     //創建動畫
                 key: 'left',        //名稱為left
@@ -108,6 +110,8 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
                 frameRate: 10,
                 repeat: -1
             });
+
+            cursors = this.input.keyboard.createCursorKeys();       //監聽按鍵
 
             stars = this.physics.add.group({                    //給星星一個團體
                 key: 'star',                                    //名稱為star
