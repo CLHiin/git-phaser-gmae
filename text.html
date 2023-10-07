@@ -48,11 +48,11 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
         var game = new Phaser.Game(config);//建立物件
 
         function preload (){
-            //image-讀取圖片。命名為'sky'，並讀取資料夾中的圖片。
+            //image-讀取圖片。命名為'???'，並讀取圖片。
             this.load.image('sky', 'assets/sky.png');
             this.load.image('ground', 'assets/platform.png');
-    this.load.image('star', 'assets/star.png');
-    this.load.image('bomb', 'assets/bomb.png');
+            this.load.image('star', 'assets/star.png');
+            this.load.image('bomb', 'assets/bomb.png');
 
             //spritesheet-精靈圖像，第三個的寬高是指定每个動畫幀的宽度和高度。
             this.load.spritesheet('dude', 'assets/dude.png',{ frameWidth: 32, frameHeight: 48 });
@@ -63,8 +63,13 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             //增加一個圖片放在0,0位置，定位點原本預設在圖片中心，但利用setOrigin後，我把繪製定位點設定到左上角。
             this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
-            platforms = this.physics.add.staticGroup();//創建一個靜態組件
-            platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+            platforms = this.physics.add.staticGroup();//創建一個physics的靜態組件
+
+            //利用這個組件創造一個實體(跟image不一樣)，利用setScale來選擇大小倍率(2倍)
+            platforms.create(400, 568, 'ground').setScale(2);
+
+
+
         }
 
         function update (){
