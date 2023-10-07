@@ -38,7 +38,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             type: Phaser.AUTO,      //自動選擇為最好的渲染方式
             width: 800,             //寬高設定
             height: 600,
-            physics: {
+            physics: {              //加入物理模塊
                 default: 'arcade',
                 arcade: {
                     gravity: { y: 300 },
@@ -70,10 +70,10 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             //增加一個圖片放在0,0位置，定位點原本預設在圖片中心，但利用setOrigin後，我把繪製定位點設定到左上角。
             this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
-            platforms = this.physics.add.staticGroup();//創建一個physics的靜態組件
+            platforms = this.physics.add.staticGroup();//創建一個物理的靜態組件
 
             //利用這個組件創造一個實體(跟image不一樣)，利用setScale來選擇大小倍率(2倍)
-            platforms.create(400, 568, 'ground').setScale(2).refreshBody();
+            platforms.create(400, 568, 'ground').setScale(2);
             platforms.create(600, 400, 'ground');
             platforms.create(50, 250, 'ground');
             platforms.create(750, 220, 'ground');
