@@ -57,7 +57,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
 
         function create (){
             //增加一個圖片放在0,0位置，定位點原本預設在圖片中心，但利用setOrigin後，我把繪製定位點設定到左上角。
-            this.add.image(0, 0, 'sky');
+            this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
             platforms = this.physics.add.staticGroup();//創建一個靜態組件
 
