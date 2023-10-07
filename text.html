@@ -70,11 +70,14 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
 
         function create (){
             platforms = this.physics.add.staticGroup();             //創建一個物理的靜態組件
-            player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
             cursors = this.input.keyboard.createCursorKeys();       //監聽按鍵
+            player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
 
-            scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+            player.setBounce(0.2);                          //角色的物理反彈值
+            player.setCollideWorldBounds(true);             //角色是否與邊界碰撞
+            player.body.setGravityY(300)                    //給予角色重力
 
+            scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });  //放置文字
 
             //增加一個圖片放在0,0位置，定位點原本預設在圖片中心，但利用setOrigin後，我把繪製定位點設定到左上角。
             this.add.image(0, 0, 'sky').setOrigin(0, 0);
@@ -85,9 +88,6 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             platforms.create(50, 250, 'ground');
             platforms.create(750, 220, 'ground');
 
-            player.setBounce(0.2);                          //角色的物理反彈值
-            player.setCollideWorldBounds(true);             //角色是否與邊界碰撞
-            player.body.setGravityY(300)                    //給予角色重力
 
             this.anims.create({     //創建動畫
                 key: 'left',        //名稱為left
