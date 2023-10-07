@@ -87,8 +87,9 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             player.body.setGravityY(300)                    //給予角色重力
 
             this.physics.add.collider(player, platforms);   //讓2個物件(組)可以碰撞
-            this.physics.add.collider(stars, platforms);
+            //this.physics.add.collider(stars, platforms);
 
+            //this.physics.add.overlap(player, stars, collectStar, null, this);   //當2物體重疊時，執行函式collectStar。
 
             this.anims.create({     //創建動畫
                 key: 'left',        //名稱為left
@@ -112,7 +113,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
 
             cursors = this.input.keyboard.createCursorKeys();   //監聽按鍵
 
-            stars = this.physics.add.group({                    //給星星一個團體
+            /*stars = this.physics.add.group({                    //給星星一個團體
                 key: 'star',                                    //名稱為star
                 repeat: 11,                                     //重複1+11次
                 setXY: { x: 12, y: 0, stepX: 70 }               //初始x:12，每次x+70
@@ -120,7 +121,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
 
             stars.children.iterate(function (child) {
                 child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));   //
-            });
+            });*/
 
 
         }
@@ -142,7 +143,36 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             if (cursors.up.isDown && player.body.touching.down){
                 player.setVelocityY(-330);
             }
+
+
+
         }
+        /*function collectStar (player, star){
+            star.disableBody(true, true);
+
+            //  Add and update the score
+            score += 10;
+            scoreText.setText('Score: ' + score);
+
+            if (stars.countActive(true) === 0)
+            {
+                //  A new batch of stars to collect
+                stars.children.iterate(function (child) {
+
+                    child.enableBody(true, child.x, 0, true, true);
+
+                });
+
+                var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
+
+                var bomb = bombs.create(x, 16, 'bomb');
+                bomb.setBounce(1);
+                bomb.setCollideWorldBounds(true);
+                bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
+                bomb.allowGravity = false;
+
+            }
+        }*/
     </script>
 </body>
 </html>
