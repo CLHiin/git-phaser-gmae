@@ -120,7 +120,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             });
 
             stars.children.iterate(function (child) {
-                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));   //
+                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));   //設置隨機0.4~0.8的Y方向反彈值
             });
 
 
@@ -140,7 +140,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
                 player.anims.play('turn');
             }
 
-            if (cursors.up.isDown && player.body.touching.down){
+            if (cursors.up.isDown && player.body.touching.down){    //如果按下up，並且物件底部有碰觸，則可以跳起。
                 player.setVelocityY(-330);
             }
 
