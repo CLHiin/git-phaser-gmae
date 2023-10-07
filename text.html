@@ -65,13 +65,10 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
 
             //spritesheet-精靈圖像，第三個的寬高是指定每个動畫幀的宽度和高度。
             this.load.spritesheet('dude', 'assets/dude.png',{ frameWidth: 32, frameHeight: 48 });
-
         }
 
         function create (){
-
             platforms = this.physics.add.staticGroup();             //創建一個物理的靜態組件
-            player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
             cursors = this.input.keyboard.createCursorKeys();       //監聽按鍵
             var score = 0;
             var scoreText;
@@ -87,6 +84,8 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             platforms.create(600, 400, 'ground');
             platforms.create(50, 250, 'ground');
             platforms.create(750, 220, 'ground');
+
+            player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
 
             player.setBounce(0.2);                          //角色的物理反彈值
             player.setCollideWorldBounds(true);             //角色是否與邊界碰撞
@@ -145,9 +144,6 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             if (cursors.up.isDown && player.body.touching.down){    //如果按下up，並且物件底部有碰觸，則可以跳起。
                 player.setVelocityY(-330);
             }
-
-
-
         }
         function collectStar (player, star){
             star.disableBody(true, true);   //移除物件
