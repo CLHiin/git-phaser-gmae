@@ -73,8 +73,8 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             platforms = this.physics.add.staticGroup();             //創建一個物理的靜態組件
             player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
             cursors = this.input.keyboard.createCursorKeys();       //監聽按鍵
-            score = 0;
-            //scoreText;
+            var score = 0;
+            var scoreText;
 
             scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
 
