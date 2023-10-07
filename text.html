@@ -87,7 +87,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             player.body.setGravityY(300)                    //給予角色重力
 
             this.physics.add.collider(player, platforms);   //讓2個物件(組)可以碰撞
-            //this.physics.add.collider(stars, platforms);
+            this.physics.add.collider(stars, platforms);
 
             //this.physics.add.overlap(player, stars, collectStar, null, this);   //當2物體重疊時，執行函式collectStar。
 
@@ -113,7 +113,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
 
             cursors = this.input.keyboard.createCursorKeys();   //監聽按鍵
 
-            /*stars = this.physics.add.group({                    //給星星一個團體
+            stars = this.physics.add.group({                    //給星星一個團體
                 key: 'star',                                    //名稱為star
                 repeat: 11,                                     //重複1+11次
                 setXY: { x: 12, y: 0, stepX: 70 }               //初始x:12，每次x+70
@@ -121,7 +121,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
 
             stars.children.iterate(function (child) {
                 child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));   //
-            });*/
+            });
 
 
         }
