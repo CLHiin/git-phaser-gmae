@@ -1,7 +1,8 @@
 <!--
 前置說明。
     
-本程式碼採用了phaser遊戲引擎，因此必須做好前置工作，基本上就是Web伺服器，假如你想讀取圖片卻不用伺服器，就會出現問題：
+本程式碼採用了phaser遊戲引擎，因此必須做好前置工作，除了下載基本的js檔外，基本上就是要準備Web伺服器了。
+假如你想讀取圖片卻不用伺服器，就會出現問題：
 
 Access to XMLHttpRequest at 'file:///........' from origin 'null' has been blocked by CORS policy: 
 Cross origin requests are only supported for protocol schemes: http, data, isolated-app, chrome-extension, chrome, https, chrome-untrusted.
@@ -112,6 +113,23 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
         }
 
         function update (){
+            cursors = this.input.keyboard.createCursorKeys();//監聽按鍵
+            if (cursors.left.isDown){
+                player.setVelocityX(-160);
+                player.anims.play('left', true);
+            }
+            else if (cursors.right.isDown){
+                player.setVelocityX(160);
+                player.anims.play('right', true);
+            }
+            else{
+                player.setVelocityX(0);
+                player.anims.play('turn');
+            }
+
+            if (cursors.up.isDown && player.body.touching.down){
+                player.setVelocityY(-330);
+            }
         }
     </script>
 </body>
