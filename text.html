@@ -52,7 +52,8 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             }
         };
 
-        var game = new Phaser.Game(config);//建立物件
+        
+        var game = new Phaser.Game(config);//建立遊戲物件
 
         function preload (){
             //image-讀取圖片。命名為'???'，並讀取圖片。
@@ -70,13 +71,41 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             //增加一個圖片放在0,0位置，定位點原本預設在圖片中心，但利用setOrigin後，我把繪製定位點設定到左上角。
             this.add.image(0, 0, 'sky').setOrigin(0, 0);
 
-            platforms = this.physics.add.staticGroup();//創建一個物理的靜態組件
+            platforms = this.physics.add.staticGroup();             //創建一個物理的靜態組件
+            player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
 
-            //利用這個組件創造一個實體(跟image不一樣)，利用setScale來選擇大小倍率(2倍)
-            platforms.create(400, 568, 'ground').setScale(2);
+            //利用靜態組件創造一個實體，可利用setScale來調整大小倍率，縮放靜態物體時，要用refreshBody(雖然用不用好像都有效)。
+            platforms.create(400, 568, 'ground').setScale(2).refreshBody();
             platforms.create(600, 400, 'ground');
             platforms.create(50, 250, 'ground');
             platforms.create(750, 220, 'ground');
+
+
+            player.setBounce(0.2);              //角色的物理反彈值
+            player.setCollideWorldBounds(true); //角色是否與邊界碰撞
+            player.body.setGravityY(300)        //給予角色重力
+            //this.physics.add.collider(player, platforms);//
+
+            this.anims.create({     //創建動畫
+                key: 'left',        //名稱為left
+                frames: this.anims.generateFrameNumbers('dude', { start: 0, end: 3 }),  //展示圖片0~3幀
+                frameRate: 10,      //每秒10幀
+                repeat: -1          //循環播放
+            });
+
+            this.anims.create({
+                key: 'turn',
+                frames: [ { key: 'dude', frame: 4 } ],
+                frameRate: 20
+            });
+
+            this.anims.create({
+                key: 'right',
+                frames: this.anims.generateFrameNumbers('dude', { start: 5, end: 8 }),
+                frameRate: 10,
+                repeat: -1
+            });
+
 
 
 
