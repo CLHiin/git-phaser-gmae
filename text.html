@@ -73,6 +73,11 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             platforms = this.physics.add.staticGroup();             //創建一個物理的靜態組件
             player = this.physics.add.sprite(100, 450, 'dude');     //創建一個物理的動態(預設)物件
             cursors = this.input.keyboard.createCursorKeys();       //監聽按鍵
+            score = 0;
+            scoreText;
+
+            scoreText = this.add.text(16, 16, 'score: 0', { fontSize: '32px', fill: '#000' });
+
 
             //增加一個圖片放在0,0位置，定位點原本預設在圖片中心，但利用setOrigin後，我把繪製定位點設定到左上角。
             this.add.image(0, 0, 'sky').setOrigin(0, 0);
@@ -147,12 +152,10 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
         function collectStar (player, star){
             star.disableBody(true, true);   //移除物件
 
-            /*//  Add and update the score
             score += 10;
             scoreText.setText('Score: ' + score);
 
-            if (stars.countActive(true) === 0)
-            {
+            if (stars.countActive(true) === 0){
                 //  A new batch of stars to collect
                 stars.children.iterate(function (child) {
 
@@ -160,6 +163,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
 
                 });
 
+                //
                 var x = (player.x < 400) ? Phaser.Math.Between(400, 800) : Phaser.Math.Between(0, 400);
 
                 var bomb = bombs.create(x, 16, 'bomb');
@@ -168,7 +172,7 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
                 bomb.setVelocity(Phaser.Math.Between(-200, 200), 20);
                 bomb.allowGravity = false;
 
-            }*/
+            }
         }
     </script>
 </body>
