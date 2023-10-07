@@ -85,7 +85,10 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
             player.setBounce(0.2);                          //角色的物理反彈值
             player.setCollideWorldBounds(true);             //角色是否與邊界碰撞
             player.body.setGravityY(300)                    //給予角色重力
+
             this.physics.add.collider(player, platforms);   //讓2個物件(組)可以碰撞
+            this.physics.add.collider(stars, platforms);
+
 
             this.anims.create({     //創建動畫
                 key: 'left',        //名稱為left
@@ -107,13 +110,22 @@ Cross origin requests are only supported for protocol schemes: http, data, isola
                 repeat: -1
             });
 
+            cursors = this.input.keyboard.createCursorKeys();   //監聽按鍵
 
+            stars = this.physics.add.group({                    //給星星一個團體
+                key: 'star',                                    //名稱為star
+                repeat: 11,                                     //重複1+11次
+                setXY: { x: 12, y: 0, stepX: 70 }               //初始x:12，每次x+70
+            });
+
+            stars.children.iterate(function (child) {
+                child.setBounceY(Phaser.Math.FloatBetween(0.4, 0.8));   //
+            });
 
 
         }
 
         function update (){
-            cursors = this.input.keyboard.createCursorKeys();//監聽按鍵
             if (cursors.left.isDown){
                 player.setVelocityX(-160);
                 player.anims.play('left', true);
