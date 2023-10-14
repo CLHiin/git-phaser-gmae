@@ -112,9 +112,9 @@
                 graphics.beginPath(); // 开始绘制路径
                 graphics.moveTo(x + radius, y);
                 graphics.arc(x, y, radius, 0, Phaser.Math.PI2 / 4, false);
-                graphics.lineTo(800 - x, y+radius);
-                graphics.arc(800 - x, y, radius, Phaser.Math.PI2 / 4, Phaser.Math.PI2 / 2, false);
-                graphics.lineTo(800-x-radius, 0);
+                graphics.lineTo(config.width - x, y+radius);
+                graphics.arc(config.width - x, y, radius, Phaser.Math.PI2 / 4, Phaser.Math.PI2 / 2, false);
+                graphics.lineTo(config.width - x - radius, 0);
                 graphics.lineTo(x+radius, 0);
                 graphics.lineTo(x+radius, y);
                 graphics.closePath(); // 关闭路径
@@ -131,7 +131,7 @@
                 // hpText.setOrigin(0.5, 0.5);
 
                 // 头像图片
-                var avatar = scene.add.image(isPlayer ? 0 : 0 , isPlayer ? 700 : 0 , isPlayer ? 'playerAvatar' : 'enemyAvatar');
+                var avatar = scene.add.image(isPlayer ? 0 : config.width - x - radius , 0 , isPlayer ? 'playerAvatar' : 'enemyAvatar');
                 avatar.displayWidth =50;
                 avatar.displayheight=50;
                 avatar.setOrigin(0, 0);
