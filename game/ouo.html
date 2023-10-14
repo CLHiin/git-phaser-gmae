@@ -102,14 +102,20 @@
 
             },
             createPlayerUI(scene, isPlayer) {
-                var x = 60; // 根据是玩家还是敌人设置 X 坐标
-                var y = 48; // 头像框的 Y 坐标
-                var radius = 50; // 头像框的半径
+                var x = 60;
+                var y = 48;
+                var radius = 50;
 
+
+                // 头像图片
+                var avatar = scene.add.image(isPlayer ? 0 : config.width - x - radius , 0 , isPlayer ? 'playerAvatar' : 'enemyAvatar');
+                avatar.displayWidth =100;
+                avatar.displayHeight=100;
+                avatar.setOrigin(0, 0);
                 
                 var graphics = scene.add.graphics();
 
-                graphics.beginPath(); // 开始绘制路径
+                graphics.beginPath();
                 graphics.moveTo(x + radius, y);
                 graphics.arc(x, y, radius, 0, Phaser.Math.PI2 / 4, false);
                 graphics.lineTo(config.width - x, y+radius);
@@ -117,9 +123,9 @@
                 graphics.lineTo(config.width - x - radius, 0);
                 graphics.lineTo(x+radius, 0);
                 graphics.lineTo(x+radius, y);
-                graphics.closePath(); // 关闭路径
+                graphics.closePath();
                 graphics.fillStyle(0xffffff,1)
-                graphics.fillPath(); // 填充路径
+                graphics.fillPath();
 
 
                 // // HP 文本
@@ -130,11 +136,7 @@
                 // });
                 // hpText.setOrigin(0.5, 0.5);
 
-                // 头像图片
-                var avatar = scene.add.image(isPlayer ? 0 : config.width - x - radius , 0 , isPlayer ? 'playerAvatar' : 'enemyAvatar');
-                avatar.displayWidth =50;
-                avatar.displayHeight=50;
-                avatar.setOrigin(0, 0);
+                
 
                 // 更新 HP 文本
                 // this.updateHPText = function () {
