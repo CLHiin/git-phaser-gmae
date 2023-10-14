@@ -128,20 +128,20 @@
                 graphics.fillPath();
 
 
-                // // HP 文本
-                // var hpText = scene.add.text(100, 0, '', {
-                //     fontSize: '20px',
-                //     fill: '#000',
-                //     align: 'center'
-                // });
-                // hpText.setOrigin(0.5, 0.5);
+                // HP 文本
+                var hpText = scene.add.text(100, 0, '', {
+                    fontSize: '20px',
+                    fill: '#000',
+                    align: 'center'
+                });
+                hpText.setOrigin(0.5, 0.5);
 
                 
 
                 // 更新 HP 文本
-                // this.updateHPText = function () {
-                //     hpText.setText('HP: ' + (isPlayer ? this.playerHP : this.enemyHP));
-                // };
+                this.updateHPText = function () {
+                    hpText.setText('HP: ' + (isPlayer ? this.playerHP : this.enemyHP));
+                };
 
             }
         }
@@ -157,7 +157,7 @@
 
             Magic_poker.drawzone(this);
             Magic_poker.createPlayerUI(this, true);     // 玩家
-            Magic_poker.createPlayerUI(this, false);    // 敌人
+            // Magic_poker.createPlayerUI(this, false);    // 敌人
             
             // Magic_poker.updateHPText();                 // 初始化 HP 文本
 
