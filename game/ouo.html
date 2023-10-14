@@ -1,16 +1,52 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Phaser Example</title>
+    <title>game</title>
     <script src="phaser.min.js"></script>
+    <style>
+        #web{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #zone{
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            width: 1200px;
+            height: 600px;
+        }
+        #Information{
+            background-color: gray;
+            width: 200px;
+            height: 600px;
+            font-size: 12.5px;
+        }        
+        #game-container{
+            width : 800px;
+            height : 600px;
+            background-color: black;
+
+        }
+    </style>
 </head>
+<body id="web"><!--基礎物件-->
+    <div id="zone">
+        <div id="Information"></div>
+        <div id="game-container"></div>
+        <div id="Information"></div>
+    </div>
+</body>
 <body>
     <script>
 
+        var platform;
+        var graphics;
         var config = {              //物件屬性
             type: Phaser.AUTO,      //自動選擇為最好的渲染方式
             width: 800,             //寬高設定
             height: 600,
+            parent: 'game-container',
             physics: {              //加入物理模塊
                 default: 'arcade',
                 arcade: {
@@ -21,23 +57,100 @@
             scene: {                
                 preload: preload,   //加載資料
                 create: create,     //創建畫面
-                update: update      //刷新畫面
+                update: update,     //刷新畫面
             }
         };
 
+        
+        var Magic_poker={
+            defaultColor:0xffffff,
+            hoverColor : 0x00ffff,
+
+
+            drawzone(scene){                            //繪製卡牌放置區
+                var rectGraphics = scene.add.graphics();
+                rectGraphics.fillStyle(0xDDDDDD, 1);
+                rectGraphics.fillRect(0, 0, 800, 100);
+                
+                for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
+                    var x = 100 + col * 120;
+                    var y = 130 + row * 200;
+                    var width = 96;
+                    var height = 144;
+                    var radius = 20;
+                    var defaultColor = this.defaultColor;
+                    var hoverColor = this.hoverColor;
+
+                    var graphics = scene.add.graphics();
+
+                    graphics.lineStyle(2, this.defaultColor);
+                    graphics.strokeRoundedRect(x, y, width, height, radius);
+                    
+                    graphics.setInteractive(new Phaser.Geom.Rectangle(x, y, width, height), Phaser.Geom.Rectangle.Contains);
+                    (function (graphics, x, y, width, height, radius) {
+                        graphics.on('pointerover', function () {    // 添加鼠标移上事件
+                            graphics.lineStyle(2, hoverColor);
+                            graphics.strokeRoundedRect(x, y, width, height, radius);
+                        });
+                        graphics.on('pointerout', function () {     // 添加鼠标移出事件
+                            graphics.lineStyle(2, defaultColor);
+                            graphics.strokeRoundedRect(x, y, width, height, radius);
+                        });
+                    })(graphics, x, y, width, height, radius);
+                }
+
+            },
+            createPlayerUI(scene, isPlayer) {
+                var x = isPlayer ? 50 : 700; // 根据是玩家还是敌人设置 X 坐标
+                var y = 50; // 头像框的 Y 坐标
+                var radius = 30; // 头像框的半径
+
+                
+
+                var graphics = scene.add.graphics();
+                graphics.fillStyle(0x0000, 1);
+                graphics.fillCircle(x, y, radius);
+
+                // // HP 文本
+                // var hpText = scene.add.text(100, 0, '', {
+                //     fontSize: '20px',
+                //     fill: '#000',
+                //     align: 'center'
+                // });
+                // hpText.setOrigin(0.5, 0.5);
+
+                // 头像图片
+                var avatar = scene.add.image(x, y, isPlayer ? 'playerAvatar' : 'enemyAvatar');
+                avatar.setScale(0.7); // 调整头像的缩放大小
+
+                // 更新 HP 文本
+                // this.updateHPText = function () {
+                //     hpText.setText('HP: ' + (isPlayer ? this.playerHP : this.enemyHP));
+                // };
+
+            }
+        }
+
+        var game = new Phaser.Game(config);
+
         function preload(){
-            this.load.image('zone', 'UI/zone.png');
+            this.load.image('playerAvatar', 'portrait/dust_face2.png.png');
+            this.load.image('enemyAvatar', 'portrait/fire_face2.png.png');
         }
 
         function create(){
-            var image = this.add.image(400, 300, 'zone');
-            image.setTint(0x28FF28); 
-        }
 
+            Magic_poker.drawzone(this);
+            Magic_poker.createPlayerUI(this, true);     // 玩家
+            Magic_poker.createPlayerUI(this, false);    // 敌人
+            
+            // Magic_poker.updateHPText();                 // 初始化 HP 文本
+
+        }
+        
         function update(){
 
         }
-
     
     </script>
 </body>
