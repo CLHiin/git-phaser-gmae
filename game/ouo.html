@@ -93,9 +93,6 @@
                 rectGraphics.fillStyle(0xDDDDDD, 1);
                 rectGraphics.fillRect(0, 0, 800, 100);
 
-                var graphics = scene.add.graphics();
-                var defaultColor = this.defaultColor;
-                var hoverColor = this.hoverColor;
                 //繪製卡牌放置區
                 for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
                     var x = 40 + col * 100;
@@ -103,28 +100,32 @@
                     var width = 64;
                     var height = 96;
                     var radius = 20;
-                    this.drawstrokeRoundedRect(graphics, x, y, width, height, radius, this.defaultColor);
+                    var graphics = scene.add.graphics();
+                    var defaultColor = this.defaultColor;
+                    var hoverColor = this.hoverColor;
+                    this.drawstrokeRoundedRect(graphics, x, y, width, height, radius, defaultColor);
                     (function (graphics, x, y, width, height, radius) {
                         graphics.setInteractive(new Phaser.Geom.Rectangle(x, y, width, height), Phaser.Geom.Rectangle.Contains);
                         graphics.on('pointerover', function () {
                             Magic_poker.drawstrokeRoundedRect(graphics, x, y, width, height, radius, hoverColor);
+                            console.log('pointerover');
                         }, this);
                         graphics.on('pointerout', function () {
                             Magic_poker.drawstrokeRoundedRect(graphics, x, y, width, height, radius, defaultColor);
                         }, this);
                     })(graphics, x, y, width, height, radius);
                 }
-                var fwidth = 124;
-                var fheight = 186;
-                var fradius = 0;
-                var fx=650;
-                var fy=130;
-                this.drawstrokeRoundedRect(graphics, fx, fy, fwidth, fheight, fradius, this.defaultColor);
-                var card = scene.add.image( fx,fy , this.card_form.cardname );
-                card.displayWidth =124;
-                card.displayHeight=186;
-                card.setOrigin(0, 0);
-                this.drawstrokeRoundedRect(graphics, fx, fy + 200, fwidth, fheight/2, 20, this.defaultColor);
+                // var fwidth = 124;
+                // var fheight = 186;
+                // var fradius = 0;
+                // var fx=650;
+                // var fy=130;
+                // this.drawstrokeRoundedRect(graphics, fx, fy, fwidth, fheight, fradius, this.defaultColor);
+                // var card = scene.add.image( fx,fy , this.card_form.cardname );
+                // card.displayWidth =124;
+                // card.displayHeight=186;
+                // card.setOrigin(0, 0);
+                // this.drawstrokeRoundedRect(graphics, fx, fy + 200, fwidth, fheight/2, 20, this.defaultColor);
 
             },
             createPlayerUI(scene, isPlayer) {
@@ -153,19 +154,16 @@
             },
             drawcardform(){
                 var imageContent = document.getElementById('image-content');
-                // 先检查并删除先前的图像
+
                 var existingImage = imageContent.querySelector('img');
-                if (existingImage) {
-                    existingImage.remove();
-                }
+                if (existingImage) existingImage.remove();
 
                 var img = document.createElement('img');
                 img.src = `card/${Magic_poker.card_name[Magic_poker.card_form.Attributes]}-${Magic_poker.card_form.cardlevel}.png`;
                 img.width = 128;
                 img.height = 192;
-
-                // 添加新的图像
                 imageContent.appendChild(img);
+
                 loadTextFile('cardform.txt');
 
             },
