@@ -74,7 +74,7 @@
             enemy_Attributes:0xFF0000,
             card_form:{
                 cardname:'water6',
-                cardtextline:1,
+                cardtextline:6,
             },
             self_role:'dust_face2',
             other_role:'fire_face2',
@@ -167,6 +167,19 @@
             Magic_poker.createPlayerUI(this, true);     // 玩家
             Magic_poker.createPlayerUI(this, false);    // 敌人
 
+
+
+            var playerAvatarImage = this.textures.get(`${Magic_poker.card_form.cardname}`); // 替换 'playerAvatar' 为您加载的图像的键
+
+            // 创建一个图像元素并设置其属性
+            var img = document.createElement('img');
+            img.src = playerAvatarImage.url; // 设置图像的URL
+            img.width = 120; // 设置图像宽度
+            img.height = 120; // 设置图像高度
+
+            // 将图像元素添加到 'image-content' 元素中
+            var imageContent = document.getElementById('image-content');
+            imageContent.appendChild(img);
             loadTextFile('cardform.txt');
         }
         
@@ -198,8 +211,6 @@
                 console.error('Error:', error);
                 document.getElementById('file-content').textContent = '无法加载文件';
             });
-            var imageContent = document.getElementById('image-content');
-            imageContent.appendChild(`${Magic_poker.card_form.cardname}`);
         }
     </script>
 </body>
