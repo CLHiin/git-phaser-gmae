@@ -37,6 +37,7 @@
         <div id="Information">
             <table width="200" style="color: white;">
                 <tr> <td>卡片資訊：</td> </tr>
+                <tbody id="image-content"></tbody>
                 <tbody id="file-content"></tbody>
             </table>
         </div>
@@ -197,6 +198,8 @@
                 console.error('Error:', error);
                 document.getElementById('file-content').textContent = '无法加载文件';
             });
+            var imageContent = document.getElementById('image-content');
+            imageContent.appendChild(`${Magic_poker.card_form.cardname}`);
         }
     </script>
 </body>
