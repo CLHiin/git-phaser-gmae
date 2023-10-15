@@ -165,7 +165,6 @@
                 this.load.image(`${Magic_poker.portrait_name[i]}${j}`,`portrait/${Magic_poker.portrait_name[i]}${j}.png`)
             for(let i=0;i<4;i++) for(let j=1;j<=13;j++)
                 this.load.image(`${Magic_poker.card_name[i]}${j}`,`card/${Magic_poker.card_name[i]}-${j}.png`)
-            
 
         }
 
@@ -177,7 +176,7 @@
 
             var playerAvatarImage = this.textures.get(Magic_poker.card_form.cardname); // 替换 'playerAvatar' 为您加载的图像的键
             var img = document.createElement('img');
-            img.src = playerAvatarImage.url;
+            img.src = `card/${Magic_poker.card_name[Magic_poker.card_form.Attributes]}-${Magic_poker.card_form.cardlevel}.png`;
             img.width = 128;
             img.height = 192;
             var imageContent = document.getElementById('image-content');
