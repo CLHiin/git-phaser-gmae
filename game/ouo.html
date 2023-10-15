@@ -188,14 +188,14 @@
 
                 if (lineNumberToShow >= 1 && lineNumberToShow <= lines.length) {
                     const selectedLine = lines[lineNumberToShow - 1];
-                    document.getElementById('output').textContent = selectedLine;
+                    document.getElementById('file-content').textContent = selectedLine;
                 } else {
-                    document.getElementById('output').textContent = '选择的行号无效';
+                    document.getElementById('file-content').textContent = '选择的行号无效';
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
-                document.getElementById('output').textContent = '无法加载文件';
+                document.getElementById('file-content').textContent = '无法加载文件';
             });
         }
     </script>
