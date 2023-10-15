@@ -70,12 +70,10 @@
             }
         };
 
-        
         var Magic_poker={
             //顏色
             defaultColor:0xffffff,
             hoverColor : 0x00ffff,
-
             //頂部UI
             Player_Attributes:0,
             enemy_Attributes:2,
@@ -85,7 +83,6 @@
             other_point_max:36,
             self_role:'dust_face2',
             other_role:'fire_face2',
-
             //遊戲數據區
             portrait_name:['dust_face','water_face','fire_face','wind_face'],
             card_name:['dust','water','fire','wind'],
@@ -96,7 +93,6 @@
                 cardtextline:6, //卡片文字列
                 cardmunber:19,
             },
-            
             focus_card(){
 
             },
@@ -110,8 +106,8 @@
                 rectGraphics.fillRect(0, 0, 800, 600);
                 //繪製卡牌放置區
                 for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
-                    var x = 40 + col * 100;
-                    var y = 130 + row * 156;
+                    var x = 163 + col * 100;
+                    var y = 200 + row * 156;
                     var width = 64;
                     var height = 96;
                     var radius = 20;
@@ -219,7 +215,6 @@
                     <strong>描述: </strong><p>&nbsp;&nbsp;&nbsp;&nbsp;${database[this.card_form.cardmunber].content}</p>
                     <strong>卡牌: </strong><p>&nbsp;&nbsp;&nbsp;&nbsp;${database[this.card_form.cardmunber].Attributes} - ${database[this.card_form.cardmunber].cardlevel}</p>
                     `;
-                //loadTextFile('cardform.txt');
             },
             Adjustment(){
                 this.card_form.cardname = `${this.card_name[this.card_form.Attributes]}${this.card_form.cardlevel}`;
@@ -229,47 +224,42 @@
         }
 
         var game = new Phaser.Game(config);
-        var handContainer = this.add.container(x, y); // 设置手牌容器的坐标 (x, y)
 
         function preload(){
             for(let i=0;i<4;i++) for(let j=1;j<=3;j++)
                 this.load.image(`${Magic_poker.portrait_name[i]}${j}`,`portrait/${Magic_poker.portrait_name[i]}${j}.png`)
             for(let i=0;i<4;i++) for(let j=1;j<=13;j++)
                 this.load.image(`${Magic_poker.card_name[i]}${j}`,`card/${Magic_poker.card_name[i]}-${j}.png`)
-
         }
 
         function create(){
-
             Magic_poker.drawzone(this);
-            // for (let i = 0; i < numberOfCards; i++) {
-            //     // 创建卡片对象
-            //     var card = this.add.image(0, 0, 'cardImage'); // 使用适当的纹理和坐标
-                
-            //     // 设置卡片交互，例如点击事件
-            //     card.setInteractive();
-            //     card.on('pointerdown', function() {
-            //         // 处理点击事件
-            //         // 可以在这里执行出牌或其他操作
-            //     }, this);
-                
-            //     // 将卡片添加到手牌容器
-            //     handContainer.add(card);
-            // }
-            
+            // 创建一个卡牌精灵
+            const card = this.add.sprite(400, 300, 'card');
+            // 设置卡牌的初始缩放
+            card.setScale(0.2);
+
+            // 发牌动画
+            this.tweens.add({
+                targets: card,
+                scaleX: 1,
+                scaleY: 1,
+                duration: 1000, // 发牌动画的持续时间（1秒）
+                ease: 'Power2',
+                yoyo: true,
+                onComplete: function () {
+                    // 发牌完成后的逻辑
+                    console.log('Card dealt.');
+                }
+            });
         }
         
         function update(){
             Magic_poker.drawcardform();
             Magic_poker.createPlayerUI(this);
-            // Magic_poker.self_point-=1;
-            // Magic_poker.other_point+=1;
-        }
-        
 
-        function loadTextFile(filename) {
-            
         }
+
     </script>
 </body>
 </html>
