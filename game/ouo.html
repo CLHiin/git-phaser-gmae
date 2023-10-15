@@ -46,7 +46,6 @@
 <body>
     <script>
 
-        var platform;
         var graphics;
         var config = {              //物件屬性
             type: Phaser.AUTO,      //自動選擇為最好的渲染方式
@@ -166,9 +165,7 @@
                 this.load.image(`${Magic_poker.portrait_name[i]}${j}`,`portrait/${Magic_poker.portrait_name[i]}${j}.png`)
             for(let i=0;i<4;i++) for(let j=1;j<=13;j++)
                 this.load.image(`${Magic_poker.card_name[i]}${j}`,`card/${Magic_poker.card_name[i]}-${j}.png`)
-            this.load.on('complete', function () {
-                create();
-            }, this);
+            
 
         }
 
