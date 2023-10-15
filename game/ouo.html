@@ -71,7 +71,10 @@
             hoverColor : 0x00ffff,
             Player_Attributes:0xFFFF00,
             enemy_Attributes:0xFF0000,
-            card_form:'water6',
+            card_form:{
+                cardname:'water6',
+                cardtextline:1,
+            },
             self_role:'dust_face2',
             other_role:'fire_face2',
             portrait_name:['dust_face','fire_face','water_face','wind_face'],
@@ -180,7 +183,7 @@
                 return response.text();
             })
             .then(text => {
-                const lineNumberToShow = 5; // 想要显示的行号
+                const lineNumberToShow = Magic_poker.card_form.cardtextline; // 想要显示的行号
                 const lines = text.split('\n');
 
                 if (lineNumberToShow >= 1 && lineNumberToShow <= lines.length) {
