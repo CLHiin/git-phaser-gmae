@@ -20,7 +20,7 @@
             background-color: gray;
             width: 200px;
             height: 600px;
-            font-size: 12.5px;
+            font-size: 20px;
         }        
         #game-container{
             width : 800px;
@@ -34,7 +34,12 @@
     <div id="zone">
         <div id="Information"></div>
         <div id="game-container"></div>
-        <div id="Information"></div>
+        <div id="Information">
+            <table width="200" style="color: white;">
+                <tr> <td>卡片資訊：</td> </tr>
+                <tbody id="file-content"></tbody>
+            </table>
+        </div>
     </div>
 </body>
 <body>
@@ -87,7 +92,7 @@
                 var hoverColor = this.hoverColor;
 
                 for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
-                    var x = 60 + col * 100;
+                    var x = 40 + col * 100;
                     var y = 130 + row * 156;
                     var width = 64;
                     var height = 96;
@@ -103,16 +108,18 @@
                         }, this);
                     })(graphics, x, y, width, height, radius);
                 }
-                var fwidth = 124;
-                var fheight = 186;
-                var fradius = 0;
-                var fx=650;
-                var fy=130;
-                this.drawstrokeRoundedRect(graphics, fx, fy, fwidth, fheight, fradius, this.defaultColor);
-                var card = scene.add.image( fx,fy , this.card_form );
-                card.displayWidth =124;
-                card.displayHeight=186;
-                card.setOrigin(0, 0);
+                // var fwidth = 124;
+                // var fheight = 186;
+                // var fradius = 0;
+                // var fx=650;
+                // var fy=130;
+                // this.drawstrokeRoundedRect(graphics, fx, fy, fwidth, fheight, fradius, this.defaultColor);
+                // var card = scene.add.image( fx,fy , this.card_form );
+                // card.displayWidth =124;
+                // card.displayHeight=186;
+                // card.setOrigin(0, 0);
+                // this.drawstrokeRoundedRect(graphics, fx, fy + 200, fwidth, fheight/2, 20, this.defaultColor);
+
             },
             createPlayerUI(scene, isPlayer) {
                 var x = 60;
@@ -155,13 +162,28 @@
             Magic_poker.drawzone(this);
             Magic_poker.createPlayerUI(this, true);     // 玩家
             Magic_poker.createPlayerUI(this, false);    // 敌人
-            
+
+            loadTextFile('cardform.txt');
         }
         
         function update(){
 
         }
-    
+        function displayFileContent(content) {
+            var fileContentDiv = document.getElementById('file-content');
+            fileContentDiv.innerHTML = '<tr><td>' + content + '</td></tr>';
+        }
+
+        function loadTextFile(filename) {
+            fetch(filename)
+                .then(response => response.text())
+                .then(content => {
+                    displayFileContent(content);
+                })
+                .catch(error => {
+                    console.error('加载文件时出错:', error);
+                });
+        }
     </script>
 </body>
 </html>
