@@ -115,17 +115,17 @@
                         }, this);
                     })(graphics, x, y, width, height, radius);
                 }
-                // var fwidth = 124;
-                // var fheight = 186;
-                // var fradius = 0;
-                // var fx=650;
-                // var fy=130;
-                // this.drawstrokeRoundedRect(graphics, fx, fy, fwidth, fheight, fradius, this.defaultColor);
-                // var card = scene.add.image( fx,fy , this.card_form );
-                // card.displayWidth =124;
-                // card.displayHeight=186;
-                // card.setOrigin(0, 0);
-                // this.drawstrokeRoundedRect(graphics, fx, fy + 200, fwidth, fheight/2, 20, this.defaultColor);
+                var fwidth = 124;
+                var fheight = 186;
+                var fradius = 0;
+                var fx=650;
+                var fy=130;
+                this.drawstrokeRoundedRect(graphics, fx, fy, fwidth, fheight, fradius, this.defaultColor);
+                var card = scene.add.image( fx,fy , this.card_form );
+                card.displayWidth =124;
+                card.displayHeight=186;
+                card.setOrigin(0, 0);
+                this.drawstrokeRoundedRect(graphics, fx, fy + 200, fwidth, fheight/2, 20, this.defaultColor);
 
             },
             createPlayerUI(scene, isPlayer) {
