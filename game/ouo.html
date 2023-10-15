@@ -73,13 +73,16 @@
             Player_Attributes:0xFFFF00,
             enemy_Attributes:0xFF0000,
             card_form:{
+                Attributes:0,   //卡片屬性 0土、1水、2火、3風
+                cardlevel:6,    //卡片等級 1~13
                 cardname:'water6',
-                cardtextline:6,
+                cardtextline:6, //卡片文字列
             },
+            
             self_role:'dust_face2',
             other_role:'fire_face2',
-            portrait_name:['dust_face','fire_face','water_face','wind_face'],
-            card_name:['dust','fire','water','wind'],
+            portrait_name:['dust_face','water_face','fire_face','wind_face'],
+            card_name:['dust','water','fire','wind'],
             drawstrokeRoundedRect(graphics, x, y, width, height, radius, color){
                 graphics.lineStyle(2, color);
                 graphics.strokeRoundedRect(x, y, width, height, radius);
@@ -149,7 +152,11 @@
                 graphics.fillStyle(0xffffff,1)
                 graphics.fillPath();
             },
-
+            Adjustment(){
+                this.card_form.cardname = `${this.card_name[this.card_form.Attributes]}${this.card_form.cardlevel}`;
+                this.card_form.cardtextline = this.card_form.cardlevel + this.card_form.Attributes*13;
+                
+            },
         }
 
         var game = new Phaser.Game(config);
@@ -176,11 +183,11 @@
             imageContent.appendChild(img);
             loadTextFile('cardform.txt');
 
-            
+
         }
         
         function update(){
-
+            Magic_poker.Adjustment();
         }
         
 
