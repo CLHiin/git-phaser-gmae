@@ -86,7 +86,7 @@
                 graphics.lineStyle(2, color);
                 graphics.strokeRoundedRect(x, y, width, height, radius);
             },
-            drawzone(scene){                            //繪製卡牌放置區
+            drawzone(scene){
                 var rectGraphics = scene.add.graphics();
                 rectGraphics.fillStyle(0x444444, 1);
                 rectGraphics.fillRect(0, 0, 800, 600);
@@ -96,7 +96,7 @@
                 var graphics = scene.add.graphics();
                 var defaultColor = this.defaultColor;
                 var hoverColor = this.hoverColor;
-
+                //繪製卡牌放置區
                 for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
                     var x = 40 + col * 100;
                     var y = 130 + row * 156;
@@ -137,7 +137,7 @@
                 avatar.displayWidth =120;
                 avatar.displayHeight=120;
                 avatar.setOrigin(0, 0);
-                
+                //蓋住空間
                 var graphics = scene.add.graphics();
                 graphics.beginPath();
                 graphics.moveTo(x + radius, y);
@@ -150,6 +150,24 @@
                 graphics.closePath();
                 graphics.fillStyle(0xffffff,1)
                 graphics.fillPath();
+            },
+            drawcardform(){
+                var imageContent = document.getElementById('image-content');
+                // 先检查并删除先前的图像
+                var existingImage = imageContent.querySelector('img');
+                if (existingImage) {
+                    existingImage.remove();
+                }
+
+                var img = document.createElement('img');
+                img.src = `card/${Magic_poker.card_name[Magic_poker.card_form.Attributes]}-${Magic_poker.card_form.cardlevel}.png`;
+                img.width = 128;
+                img.height = 192;
+
+                // 添加新的图像
+                imageContent.appendChild(img);
+                loadTextFile('cardform.txt');
+
             },
             Adjustment(){
                 this.card_form.cardname = `${this.card_name[this.card_form.Attributes]}${this.card_form.cardlevel}`;
@@ -174,19 +192,11 @@
             Magic_poker.createPlayerUI(this, true);     // 玩家
             Magic_poker.createPlayerUI(this, false);    // 敌人
 
-            var playerAvatarImage = this.textures.get(Magic_poker.card_form.cardname); // 替换 'playerAvatar' 为您加载的图像的键
-            var img = document.createElement('img');
-            img.src = `card/${Magic_poker.card_name[Magic_poker.card_form.Attributes]}-${Magic_poker.card_form.cardlevel}.png`;
-            img.width = 128;
-            img.height = 192;
-            var imageContent = document.getElementById('image-content');
-            imageContent.appendChild(img);
-            loadTextFile('cardform.txt');
-
-            console.log(Magic_poker.card_form.cardname);
+            
         }
         
         function update(){
+            Magic_poker.drawcardform();
             Magic_poker.Adjustment();
         }
         
