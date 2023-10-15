@@ -84,14 +84,16 @@
             //遊戲數據區
             portrait_name:['dust_face','water_face','fire_face','wind_face'],
             card_name:['dust','water','fire','wind'],
-            card_form:{
+            card_form:{         //注意的卡片資訊
                 Attributes:0,   //卡片屬性 0土、1水、2火、3風
                 cardlevel:6,    //卡片等級 1~13
                 cardname:'water6',
                 cardtextline:6, //卡片文字列
             },
             
-            
+            focus_card(){
+
+            },
             drawstrokeRoundedRect(graphics, x, y, width, height, radius, color){
                 graphics.lineStyle(2, color);
                 graphics.strokeRoundedRect(x, y, width, height, radius);
@@ -100,7 +102,6 @@
                 var rectGraphics = scene.add.graphics();
                 rectGraphics.fillStyle(0x444444, 1);
                 rectGraphics.fillRect(0, 0, 800, 600);
-
                 //繪製卡牌放置區
                 for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
                     var x = 40 + col * 100;
@@ -116,7 +117,7 @@
                         graphics.setInteractive(new Phaser.Geom.Rectangle(x, y, width, height), Phaser.Geom.Rectangle.Contains);
                         graphics.on('pointerover', function () {
                             Magic_poker.drawstrokeRoundedRect(graphics, x, y, width, height, radius, hoverColor);
-                            console.log('pointerover');
+                            Magic_poker.
                         }, this);
                         graphics.on('pointerout', function () {
                             Magic_poker.drawstrokeRoundedRect(graphics, x, y, width, height, radius, defaultColor);
@@ -124,11 +125,10 @@
                     })(graphics, x, y, width, height, radius);
                 }
             },
-            createPlayerUI(scene) {
+            createPlayerUI(scene) {//完成
                 var x = 60;
                 var y = 50;
                 var radius = 50;
-
                 // 头像图片
                 var avatar1 = scene.add.image(0 , -20 , this.self_role );
                 avatar1.displayWidth =120;
@@ -159,7 +159,7 @@
                 var avatar2_y=60;
                 //玩家血條框
                 var avatar1_HP = scene.add.graphics();
-                avatar1_HP.fillStyle(0x444444, 1);
+                avatar1_HP.fillStyle(this.self_point < 10 ? 0xFF3333 : 0x444444, 1);
                 avatar1_HP.fillRoundedRect(avatar1_x, avatar1_y, HP_width, HP_height, 10);
                 avatar1_HP.fillStyle(0x000000, 1);
                 avatar1_HP.fillRoundedRect(avatar1_x + interval / 2, avatar1_y + interval / 2, HP_width - interval, HP_height - interval, 10);
@@ -171,15 +171,14 @@
                 redHP.fillStyle(0xff0000, 1); // 使用红色
                 redHP.fillRoundedRect(redX1, redY1, redWidth1, HP_height - interval, 10);
                 //玩家HP文本
-                var playerHPText = scene.add.text(avatar1_x + HP_width / 2, avatar1_y + HP_height / 2, `HP: ${this.self_point}/${this.self_point_max}`, {
-                    
+                var playerHPText = scene.add.text(avatar1_x + HP_width / 2, avatar1_y + HP_height / 2 + interval, `HP: ${this.self_point}/${this.self_point_max}`, {
                     font: '18px Arial',
                     fill: '#ffffff'
                 });
                 playerHPText.setOrigin(0.5, 1); // 设置文本锚点为底部中心
                 //敵人紅色血條
                 var avatar2_HP = scene.add.graphics();
-                avatar2_HP.fillStyle(0x444444, 1);
+                avatar2_HP.fillStyle(this.other_point < 10 ? 0xFF3333 : 0x444444, 1);
                 avatar2_HP.fillRoundedRect(avatar2_x, avatar2_y, HP_width, HP_height, 10);
                 avatar2_HP.fillStyle(0x000000, 1);
                 avatar2_HP.fillRoundedRect(avatar2_x + interval / 2, avatar2_y + interval / 2, HP_width - interval, HP_height - interval, 10);
@@ -191,12 +190,11 @@
                 redHP.fillStyle(0xff0000, 1); // 使用红色
                 redHP.fillRoundedRect(redX2, redY2, redWidth2, HP_height - interval, 10);
                 //敵人HP文本
-                var enemyHPText = scene.add.text(avatar2_x + HP_width / 2, avatar2_y + HP_height / 2+10, `HP: ${this.other_point}/${this.other_point_max}`, {
+                var enemyHPText = scene.add.text(avatar2_x + HP_width / 2, avatar2_y + HP_height / 2 + interval, `HP: ${this.other_point}/${this.other_point_max}`, {
                     font: '18px Arial',
                     fill: '#ffffff'
                 });
                 enemyHPText.setOrigin(0.5, 1);
-
             },
             drawcardform(){
                 var imageContent = document.getElementById('image-content');
@@ -209,9 +207,7 @@
                 img.width = 128;
                 img.height = 192;
                 imageContent.appendChild(img);
-
-                loadTextFile('cardform.txt');
-
+                //loadTextFile('cardform.txt');
             },
             Adjustment(){
                 this.card_form.cardname = `${this.card_name[this.card_form.Attributes]}${this.card_form.cardlevel}`;
@@ -240,8 +236,8 @@
         function update(){
             Magic_poker.drawcardform();
             Magic_poker.createPlayerUI(this);
-            Magic_poker.self_point-=1;
-            Magic_poker.other_point+=1;
+            // Magic_poker.self_point-=1;
+            // Magic_poker.other_point+=1;
         }
         
 
