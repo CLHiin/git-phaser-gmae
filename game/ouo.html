@@ -75,7 +75,7 @@
             card_form:{
                 Attributes:0,   //卡片屬性 0土、1水、2火、3風
                 cardlevel:6,    //卡片等級 1~13
-                cardname:'water6',
+                cardname:'water 6',
                 cardtextline:6, //卡片文字列
             },
             
@@ -166,6 +166,7 @@
                 this.load.image(`${Magic_poker.portrait_name[i]}${j}`,`portrait/${Magic_poker.portrait_name[i]}${j}.png`)
             for(let i=0;i<4;i++) for(let j=1;j<=13;j++)
                 this.load.image(`${Magic_poker.card_name[i]}${j}`,`card/${Magic_poker.card_name[i]}-${j}.png`)
+
         }
 
         function create(){
@@ -174,7 +175,7 @@
             Magic_poker.createPlayerUI(this, true);     // 玩家
             Magic_poker.createPlayerUI(this, false);    // 敌人
 
-            var playerAvatarImage = this.textures.get('water6'); // 替换 'playerAvatar' 为您加载的图像的键
+            var playerAvatarImage = this.textures.get(Magic_poker.card_form.cardname); // 替换 'playerAvatar' 为您加载的图像的键
             var img = document.createElement('img');
             img.src = playerAvatarImage.url;
             img.width = 128;
