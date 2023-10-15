@@ -169,20 +169,31 @@
         function update(){
 
         }
-        function displayFileContent(content) {
-            var fileContentDiv = document.getElementById('file-content');
-            fileContentDiv.innerHTML = '<tr><td>' + content + '</td></tr>';
-        }
+        
 
         function loadTextFile(filename) {
-            fetch(filename)
-                .then(response => response.text())
-                .then(content => {
-                    displayFileContent(content);
-                })
-                .catch(error => {
-                    console.error('加载文件时出错:', error);
-                });
+            fetch(filePath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .then(text => {
+                const lineNumberToShow = 5; // 想要显示的行号
+                const lines = text.split('\n');
+
+                if (lineNumberToShow >= 1 && lineNumberToShow <= lines.length) {
+                    const selectedLine = lines[lineNumberToShow - 1];
+                    document.getElementById('output').textContent = selectedLine;
+                } else {
+                    document.getElementById('output').textContent = '选择的行号无效';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('output').textContent = '无法加载文件';
+            });
         }
     </script>
 </body>
