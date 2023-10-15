@@ -67,10 +67,21 @@
         };
 
         var Magic_poker={
+            //顏色
             defaultColor:0xffffff,
             hoverColor : 0x00ffff,
+
+            //頂部UI
             Player_Attributes:0xFFFF00,
             enemy_Attributes:0xFF0000,
+            Player_point:36,
+            enemy_Attributes:36,
+            self_role:'dust_face2',
+            other_role:'fire_face2',
+
+            //遊戲數據區
+            portrait_name:['dust_face','water_face','fire_face','wind_face'],
+            card_name:['dust','water','fire','wind'],
             card_form:{
                 Attributes:0,   //卡片屬性 0土、1水、2火、3風
                 cardlevel:6,    //卡片等級 1~13
@@ -78,10 +89,7 @@
                 cardtextline:6, //卡片文字列
             },
             
-            self_role:'dust_face2',
-            other_role:'fire_face2',
-            portrait_name:['dust_face','water_face','fire_face','wind_face'],
-            card_name:['dust','water','fire','wind'],
+            
             drawstrokeRoundedRect(graphics, x, y, width, height, radius, color){
                 graphics.lineStyle(2, color);
                 graphics.strokeRoundedRect(x, y, width, height, radius);
@@ -90,8 +98,6 @@
                 var rectGraphics = scene.add.graphics();
                 rectGraphics.fillStyle(0x444444, 1);
                 rectGraphics.fillRect(0, 0, 800, 600);
-                rectGraphics.fillStyle(0xDDDDDD, 1);
-                rectGraphics.fillRect(0, 0, 800, 100);
 
                 //繪製卡牌放置區
                 for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
@@ -115,18 +121,6 @@
                         }, this);
                     })(graphics, x, y, width, height, radius);
                 }
-                // var fwidth = 124;
-                // var fheight = 186;
-                // var fradius = 0;
-                // var fx=650;
-                // var fy=130;
-                // this.drawstrokeRoundedRect(graphics, fx, fy, fwidth, fheight, fradius, this.defaultColor);
-                // var card = scene.add.image( fx,fy , this.card_form.cardname );
-                // card.displayWidth =124;
-                // card.displayHeight=186;
-                // card.setOrigin(0, 0);
-                // this.drawstrokeRoundedRect(graphics, fx, fy + 200, fwidth, fheight/2, 20, this.defaultColor);
-
             },
             createPlayerUI(scene, isPlayer) {
                 var x = 60;
@@ -140,17 +134,31 @@
                 avatar.setOrigin(0, 0);
                 //蓋住空間
                 var graphics = scene.add.graphics();
+
                 graphics.beginPath();
-                graphics.moveTo(x + radius, y);
+                //graphics.moveTo(x + radius, y);
+
                 graphics.arc(x, y, radius, 0, Phaser.Math.PI2 / 4, false);
-                graphics.lineTo(config.width - x, y+radius);
-                graphics.arc(config.width - x, y, radius, Phaser.Math.PI2 / 4, Phaser.Math.PI2 / 2, false);
-                graphics.lineTo(config.width - x - radius, 0);
+
+                graphics.lineTo(config.width - x - radius, y+radius);
+                //graphics.lineTo(config.width - x - radius, y);
+
+                graphics.arc(config.width - x, y, radius, Phaser.Math.PI2 / 2, 3 * Phaser.Math.PI2 / 4, false);
+
                 graphics.lineTo(x+radius, 0);
+
                 graphics.lineTo(x+radius, y);
+
                 graphics.closePath();
                 graphics.fillStyle(0xffffff,1)
                 graphics.fillPath();
+                //點數表現
+                var self_HP = scene.add.graphics();
+                self_HP.fillStyle(0x444444, 1);
+                self_HP.fillRect(130, 10, 250, 30);
+                self_HP.fillStyle(0x000000, 1);
+                self_HP.fillRect(135, 15, 240, 20);
+
             },
             drawcardform(){
                 var imageContent = document.getElementById('image-content');
@@ -164,7 +172,7 @@
                 img.height = 192;
                 imageContent.appendChild(img);
 
-                loadTextFile('cardform.txt');
+                //loadTextFile('cardform.txt');
 
             },
             Adjustment(){
@@ -196,6 +204,7 @@
         function update(){
             Magic_poker.drawcardform();
             Magic_poker.Adjustment();
+
         }
         
 
