@@ -21,17 +21,13 @@
             background-color: gray;
             width: 200px;
             height: 600px;
-            font-size: 18px;
+            font-size: 20px;
         }        
         #game-container{
             width : 800px;
             height : 600px;
             background-color: black;
 
-        }
-        strong{
-            font-size: 20px;
-            color: black;
         }
     </style>
 </head>
@@ -41,6 +37,7 @@
         <div id="game-container"></div>
         <div id="Information">
             <table width="200" style="color: white;">
+                <tr> <td>卡片資訊：</td> </tr>
                 <tbody id="image-content"></tbody>
                 <tbody id="file-content"></tbody>
             </table>
@@ -90,11 +87,10 @@
             portrait_name:['dust_face','water_face','fire_face','wind_face'],
             card_name:['dust','water','fire','wind'],
             card_form:{         //注意的卡片資訊
-                Attributes:1,   //卡片屬性 0土、1水、2火、3風
+                Attributes:0,   //卡片屬性 0土、1水、2火、3風
                 cardlevel:6,    //卡片等級 1~13
                 cardname:'water6',
                 cardtextline:6, //卡片文字列
-                cardmunber:19,
             },
             
             focus_card(){
@@ -209,16 +205,9 @@
 
                 var img = document.createElement('img');
                 img.src = `card/${Magic_poker.card_name[Magic_poker.card_form.Attributes]}-${Magic_poker.card_form.cardlevel}.png`;
-                img.width = 196;
-                img.height = 294;
+                img.width = 128;
+                img.height = 192;
                 imageContent.appendChild(img);
-
-                var fileContentElement = document.getElementById('file-content');
-                    fileContentElement.innerHTML = `
-                    <strong>名稱: </strong><p>&nbsp;&nbsp;&nbsp;&nbsp;${database[this.card_form.cardmunber].name}</p>
-                    <strong>描述: </strong><p>&nbsp;&nbsp;&nbsp;&nbsp;${database[this.card_form.cardmunber].content}</p>
-                    <strong>卡牌: </strong><p>&nbsp;&nbsp;&nbsp;&nbsp;${database[this.card_form.cardmunber].Attributes} - ${database[this.card_form.cardmunber].cardlevel}</p>
-                    `;
                 //loadTextFile('cardform.txt');
             },
             Adjustment(){
@@ -242,20 +231,20 @@
         function create(){
 
             Magic_poker.drawzone(this);
-            // for (let i = 0; i < numberOfCards; i++) {
-            //     // 创建卡片对象
-            //     var card = this.add.image(0, 0, 'cardImage'); // 使用适当的纹理和坐标
+            for (let i = 0; i < numberOfCards; i++) {
+                // 创建卡片对象
+                var card = this.add.image(0, 0, 'cardImage'); // 使用适当的纹理和坐标
                 
-            //     // 设置卡片交互，例如点击事件
-            //     card.setInteractive();
-            //     card.on('pointerdown', function() {
-            //         // 处理点击事件
-            //         // 可以在这里执行出牌或其他操作
-            //     }, this);
+                // 设置卡片交互，例如点击事件
+                card.setInteractive();
+                card.on('pointerdown', function() {
+                    // 处理点击事件
+                    // 可以在这里执行出牌或其他操作
+                }, this);
                 
-            //     // 将卡片添加到手牌容器
-            //     handContainer.add(card);
-            // }
+                // 将卡片添加到手牌容器
+                handContainer.add(card);
+            }
             
         }
         
@@ -268,7 +257,28 @@
         
 
         function loadTextFile(filename) {
-            
+            fetch(filename)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`Network response was not ok: ${response.statusText}`);
+                }
+                return response.text();
+            })
+            .then(text => {
+                const lineNumberToShow = Magic_poker.card_form.cardtextline; // 想要显示的行号
+                const lines = text.split('\n');
+
+                if (lineNumberToShow >= 1 && lineNumberToShow <= lines.length) {
+                    const selectedLine = lines[lineNumberToShow - 1];
+                    document.getElementById('file-content').textContent = selectedLine;
+                } else {
+                    document.getElementById('file-content').textContent = '选择的行号无效';
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                document.getElementById('file-content').textContent = '无法加载文件';
+            });
         }
     </script>
 </body>
