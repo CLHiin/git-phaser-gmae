@@ -61,63 +61,71 @@
             }
         };
 
-        
         var Magic_poker={
             defaultColor:0xffffff,
             hoverColor : 0x00ffff,
             Player_Attributes:0xFFFF00,
             enemy_Attributes:0xFF0000,
-            Role_face:['dust_face','fire_face','water_face','wind_face'],
-
+            card_form:'water6',
+            self_role:'dust_face2',
+            other_role:'fire_face2',
+            portrait_name:['dust_face','fire_face','water_face','wind_face'],
+            card_name:['dust','fire','water','wind'],
+            drawstrokeRoundedRect(graphics, x, y, width, height, radius, color){
+                graphics.lineStyle(2, color);
+                graphics.strokeRoundedRect(x, y, width, height, radius);
+            },
             drawzone(scene){                            //繪製卡牌放置區
                 var rectGraphics = scene.add.graphics();
                 rectGraphics.fillStyle(0x444444, 1);
                 rectGraphics.fillRect(0, 0, 800, 600);
                 rectGraphics.fillStyle(0xDDDDDD, 1);
                 rectGraphics.fillRect(0, 0, 800, 100);
-                
+
+                var graphics = scene.add.graphics();
+                var defaultColor = this.defaultColor;
+                var hoverColor = this.hoverColor;
+
                 for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
-                    var x = 80 + col * 100;
+                    var x = 60 + col * 100;
                     var y = 130 + row * 156;
                     var width = 64;
                     var height = 96;
                     var radius = 20;
-                    var defaultColor = this.defaultColor;
-                    var hoverColor = this.hoverColor;
-
-                    var graphics = scene.add.graphics();
-
-                    graphics.lineStyle(2, this.defaultColor);
-                    graphics.strokeRoundedRect(x, y, width, height, radius);
-                    
-                    graphics.setInteractive(new Phaser.Geom.Rectangle(x, y, width, height), Phaser.Geom.Rectangle.Contains);
+                    this.drawstrokeRoundedRect(graphics, x, y, width, height, radius, this.defaultColor);
                     (function (graphics, x, y, width, height, radius) {
-                        graphics.on('pointerover', function () {    // 添加鼠标移上事件
-                            graphics.lineStyle(2, hoverColor);
-                            graphics.strokeRoundedRect(x, y, width, height, radius);
-                        });
-                        graphics.on('pointerout', function () {     // 添加鼠标移出事件
-                            graphics.lineStyle(2, defaultColor);
-                            graphics.strokeRoundedRect(x, y, width, height, radius);
-                        });
+                        graphics.setInteractive(new Phaser.Geom.Rectangle(x, y, width, height), Phaser.Geom.Rectangle.Contains);
+                        graphics.on('pointerover', function () {
+                            Magic_poker.drawstrokeRoundedRect(graphics, x, y, width, height, radius, hoverColor);
+                        }, this);
+                        graphics.on('pointerout', function () {
+                            Magic_poker.drawstrokeRoundedRect(graphics, x, y, width, height, radius, defaultColor);
+                        }, this);
                     })(graphics, x, y, width, height, radius);
                 }
-
+                var fwidth = 124;
+                var fheight = 186;
+                var fradius = 0;
+                var fx=650;
+                var fy=130;
+                this.drawstrokeRoundedRect(graphics, fx, fy, fwidth, fheight, fradius, this.defaultColor);
+                var card = scene.add.image( fx,fy , this.card_form );
+                card.displayWidth =124;
+                card.displayHeight=186;
+                card.setOrigin(0, 0);
             },
             createPlayerUI(scene, isPlayer) {
                 var x = 60;
                 var y = 50;
                 var radius = 50;
 
-
                 // 头像图片
-                var avatar = scene.add.image(isPlayer ? 0 : config.width - x - radius , -20 , isPlayer ? 'dust_face2' : 'fire_face2');
+                var avatar = scene.add.image(isPlayer ? 0 : config.width - x - radius , -20 , isPlayer ? this.self_role : this.other_role );
                 avatar.displayWidth =120;
                 avatar.displayHeight=120;
                 avatar.setOrigin(0, 0);
                 
                 var graphics = scene.add.graphics();
-
                 graphics.beginPath();
                 graphics.moveTo(x + radius, y);
                 graphics.arc(x, y, radius, 0, Phaser.Math.PI2 / 4, false);
@@ -129,32 +137,17 @@
                 graphics.closePath();
                 graphics.fillStyle(0xffffff,1)
                 graphics.fillPath();
+            },
 
-
-                // HP 文本
-                var hpText = scene.add.text(100, 0, '', {
-                    fontSize: '20px',
-                    fill: '#000',
-                    align: 'center'
-                });
-                hpText.setOrigin(0.5, 0.5);
-
-                
-
-                // 更新 HP 文本
-                this.updateHPText = function () {
-                    hpText.setText('HP: ' + (isPlayer ? this.playerHP : this.enemyHP));
-                };
-
-            }
         }
 
         var game = new Phaser.Game(config);
 
         function preload(){
-            for(let i=0;i<4;i++)
-                for(let j=1;j<=3;j++)
-                    this.load.image(`${Magic_poker.Role_face[i]}${j}`,`portrait/${Magic_poker.Role_face[i]}${j}.png`)
+            for(let i=0;i<4;i++) for(let j=1;j<=3;j++)
+                this.load.image(`${Magic_poker.portrait_name[i]}${j}`,`portrait/${Magic_poker.portrait_name[i]}${j}.png`)
+            for(let i=0;i<4;i++) for(let j=1;j<=13;j++)
+                this.load.image(`${Magic_poker.card_name[i]}${j}`,`card/${Magic_poker.card_name[i]}-${j}.png`)
         }
 
         function create(){
@@ -163,8 +156,6 @@
             Magic_poker.createPlayerUI(this, true);     // 玩家
             Magic_poker.createPlayerUI(this, false);    // 敌人
             
-            // Magic_poker.updateHPText();                 // 初始化 HP 文本
-
         }
         
         function update(){
