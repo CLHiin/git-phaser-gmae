@@ -72,10 +72,12 @@
             hoverColor : 0x00ffff,
 
             //頂部UI
-            Player_Attributes:0xFFFF00,
-            enemy_Attributes:0xFF0000,
-            Player_point:36,
-            enemy_Attributes:36,
+            Player_Attributes:0,
+            enemy_Attributes:2,
+            self_point:36,
+            self_point_max:36,
+            other_point:0,
+            other_point_max:36,
             self_role:'dust_face2',
             other_role:'fire_face2',
 
@@ -122,42 +124,78 @@
                     })(graphics, x, y, width, height, radius);
                 }
             },
-            createPlayerUI(scene, isPlayer) {
+            createPlayerUI(scene) {
                 var x = 60;
                 var y = 50;
                 var radius = 50;
 
                 // 头像图片
-                var avatar = scene.add.image(isPlayer ? 0 : config.width - x - radius , -20 , isPlayer ? this.self_role : this.other_role );
-                avatar.displayWidth =120;
-                avatar.displayHeight=120;
-                avatar.setOrigin(0, 0);
+                var avatar1 = scene.add.image(0 , -20 , this.self_role );
+                avatar1.displayWidth =120;
+                avatar1.displayHeight=120;
+                avatar1.setOrigin(0, 0);
+                var avatar2 = scene.add.image(config.width - x - radius , -20 , this.other_role );
+                avatar2.displayWidth =120;
+                avatar2.displayHeight=120;
+                avatar2.setOrigin(0, 0);
                 //蓋住空間
                 var graphics = scene.add.graphics();
-
                 graphics.beginPath();
-                //graphics.moveTo(x + radius, y);
-
                 graphics.arc(x, y, radius, 0, Phaser.Math.PI2 / 4, false);
-
                 graphics.lineTo(config.width - x - radius, y+radius);
-                //graphics.lineTo(config.width - x - radius, y);
-
                 graphics.arc(config.width - x, y, radius, Phaser.Math.PI2 / 2, 3 * Phaser.Math.PI2 / 4, false);
-
                 graphics.lineTo(x+radius, 0);
-
                 graphics.lineTo(x+radius, y);
-
                 graphics.closePath();
-                graphics.fillStyle(0xffffff,1)
+                graphics.fillStyle(0xf0f0f0,1)
                 graphics.fillPath();
                 //點數表現
-                var self_HP = scene.add.graphics();
-                self_HP.fillStyle(0x444444, 1);
-                self_HP.fillRect(130, 10, 250, 30);
-                self_HP.fillStyle(0x000000, 1);
-                self_HP.fillRect(135, 15, 240, 20);
+                var HP_width =250;
+                var HP_height =30;
+                var interval =10;
+                var avatar1_x=130;
+                var avatar1_y=10;
+                var avatar2_x=420;
+                var avatar2_y=60;
+                //玩家血條框
+                var avatar1_HP = scene.add.graphics();
+                avatar1_HP.fillStyle(0x444444, 1);
+                avatar1_HP.fillRoundedRect(avatar1_x, avatar1_y, HP_width, HP_height, 10);
+                avatar1_HP.fillStyle(0x000000, 1);
+                avatar1_HP.fillRoundedRect(avatar1_x + interval / 2, avatar1_y + interval / 2, HP_width - interval, HP_height - interval, 10);
+                //玩家紅色血條
+                var redWidth1 = (this.self_point / this.self_point_max) * (HP_width - interval);
+                var redX1 = avatar1_x + interval / 2; // 红色区域的 X 坐标
+                var redY1 = avatar1_y + interval / 2; // 红色区域的 Y 坐标
+                var redHP = scene.add.graphics();
+                redHP.fillStyle(0xff0000, 1); // 使用红色
+                redHP.fillRoundedRect(redX1, redY1, redWidth1, HP_height - interval, 10);
+                //玩家HP文本
+                var playerHPText = scene.add.text(avatar1_x + HP_width / 2, avatar1_y + HP_height / 2, `HP: ${this.self_point}/${this.self_point_max}`, {
+                    
+                    font: '18px Arial',
+                    fill: '#ffffff'
+                });
+                playerHPText.setOrigin(0.5, 1); // 设置文本锚点为底部中心
+                //敵人紅色血條
+                var avatar2_HP = scene.add.graphics();
+                avatar2_HP.fillStyle(0x444444, 1);
+                avatar2_HP.fillRoundedRect(avatar2_x, avatar2_y, HP_width, HP_height, 10);
+                avatar2_HP.fillStyle(0x000000, 1);
+                avatar2_HP.fillRoundedRect(avatar2_x + interval / 2, avatar2_y + interval / 2, HP_width - interval, HP_height - interval, 10);
+                //敵人紅色血條
+                var redWidth2 = (this.other_point / this.other_point_max) * (HP_width - interval);
+                var redX2 = avatar2_x + interval / 2; // 红色区域的 X 坐标
+                var redY2 = avatar2_y + interval / 2; // 红色区域的 Y 坐标
+                var redHP = scene.add.graphics();
+                redHP.fillStyle(0xff0000, 1); // 使用红色
+                redHP.fillRoundedRect(redX2, redY2, redWidth2, HP_height - interval, 10);
+                //敵人HP文本
+                var enemyHPText = scene.add.text(avatar2_x + HP_width / 2, avatar2_y + HP_height / 2+10, `HP: ${this.other_point}/${this.other_point_max}`, {
+                    font: '18px Arial',
+                    fill: '#ffffff'
+                });
+                enemyHPText.setOrigin(0.5, 1);
 
             },
             drawcardform(){
@@ -172,7 +210,7 @@
                 img.height = 192;
                 imageContent.appendChild(img);
 
-                //loadTextFile('cardform.txt');
+                loadTextFile('cardform.txt');
 
             },
             Adjustment(){
@@ -195,16 +233,15 @@
         function create(){
 
             Magic_poker.drawzone(this);
-            Magic_poker.createPlayerUI(this, true);     // 玩家
-            Magic_poker.createPlayerUI(this, false);    // 敌人
 
             
         }
         
         function update(){
             Magic_poker.drawcardform();
-            Magic_poker.Adjustment();
-
+            Magic_poker.createPlayerUI(this);
+            Magic_poker.self_point-=1;
+            Magic_poker.other_point+=1;
         }
         
 
