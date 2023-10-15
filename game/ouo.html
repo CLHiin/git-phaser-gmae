@@ -174,7 +174,7 @@
             Magic_poker.createPlayerUI(this, true);     // 玩家
             Magic_poker.createPlayerUI(this, false);    // 敌人
 
-            var playerAvatarImage = this.textures.get(`${Magic_poker.card_form.cardname}`); // 替换 'playerAvatar' 为您加载的图像的键
+            var playerAvatarImage = this.textures.get(Magic_poker.card_form.cardname); // 替换 'playerAvatar' 为您加载的图像的键
             var img = document.createElement('img');
             img.src = playerAvatarImage.url;
             img.width = 128;
