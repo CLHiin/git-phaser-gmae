@@ -110,7 +110,7 @@ function create(){
             button.destroy();
             if (i === 0) computer_battle_(this);
             else if (i === 1) Multiplayer_battle = true;
-            else if (i === 2) Tutorial_mode      = true;
+            else if (i === 2) creatTeaching_area(scene);
         });
         var style = {font: `bold 30px Arial`,fill: `#000000 }`,};
         var text = this.add.text( x + width / 2, y + i * 100 + height / 2, textData[i], style).setOrigin(0.5);
