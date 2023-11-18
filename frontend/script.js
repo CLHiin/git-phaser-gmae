@@ -392,6 +392,66 @@ function computer_battle_(scene) {
     };
 }
      
+function computer_battle_(scene) {
+    var x1 = 200, y1 = 300, x2 = 600, y2 = 300, frames = [];
+    for(let i = 0; i < 4; i++) for(let j = 1; j <= 3; j++) frames.push(`${ portrait_name[i]}${j}`);
+    scene.add.graphics({ fillStyle: { color: 0x222222 } }).fillRect(0, 0, config.width, 600);
+    var mask1 = scene.add.graphics().fillCircle(x1, y1,  radius);
+    var mask2 = scene.add.graphics().fillCircle(x2, y2,  radius);
+    var Icon1 = scene.add.image(x1, y1, frames[0]).setOrigin(0.5, 0.5).setDisplaySize(100, 100).setMask(mask1.createGeometryMask());
+    var Icon2 = scene.add.image(x2, y2, frames[0]).setOrigin(0.5, 0.5).setDisplaySize(100, 100).setMask(mask2.createGeometryMask());
+    scene.tweens.add({
+        targets: Icon1,
+        duration: 200,
+        repeat: 5,
+        callback: () => {
+            Icon1.setTexture(frames[Phaser.Math.Between(0, frames.length - 1)]);
+            Icon2.setTexture(frames[Phaser.Math.Between(0, frames.length - 1)]);
+        },
+        onComplete: ()=>{
+            other_Attributes= Phaser.Math.Between(0, 3);
+            self_Attributes = Phaser.Math.Between(0, 3);
+            other_point_max = Phaser.Math.Between(11, 13) * 3;
+            self_point_max  = Phaser.Math.Between(11, 13) * 3;
+            self_point =  self_point_max;
+            other_point=  other_point_max;
+            other_role= `${portrait_name[other_Attributes]}${[other_point_max/ 3 - 10]}`;
+            self_role = `${portrait_name[self_Attributes ]}${[self_point_max / 3 - 10]}`;
+            Icon1.setTexture(other_role);
+            Icon2.setTexture(self_role );
+
+            for(let i=0;i<=3;i++) for(let j=1;j<=13;j++) deckContainer.push(`${card_name[i]}${j}`);
+            var cardToRemove = `${card_name[ self_Attributes]}${self_point_max / 3 }`;
+            deckContainer.splice(deckContainer.indexOf(cardToRemove), 1);
+            scene.time.delayedCall(500, moveicon, [], this);
+        }
+    });
+    function moveicon(){
+        var Icon1_ = scene.tweens.add({
+            targets: Icon1,
+            x:  X1,
+            y:  Y1,
+            duration: 2000,
+            ease: 'Power2',
+            onUpdate:  (tween, target) => mask1.clear().fillCircle(target.x, target.y,  radius),
+        });
+        var Icon2_ =scene.tweens.add({
+            targets: Icon2,
+            x:X2,
+            y:Y2,
+            duration: 2000,
+            ease: 'Power2',
+            onUpdate:  (tween, target) => mask2.clear().fillCircle(target.x, target.y,  radius),
+            onComplete:()=>{
+                drawzone(scene);
+                createPlayerUI(scene);
+                for (let i = 0; i < 15; i++)scene.time.delayedCall(i * 500, dealing_cards, [scene]);
+                drawcardform();
+            }
+        });
+    }
+}
+     
 function creatTeaching_area(scene){
     const tx = 300, tx2 = 200, ty = 450, cx = 650, cy = 150, radius = 20;
     var mask = scene.add.graphics();  //teach貓的遮罩
