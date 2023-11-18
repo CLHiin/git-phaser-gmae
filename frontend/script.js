@@ -420,9 +420,9 @@ function computer_battle_(scene) {
             Icon1.setTexture(other_role);
             Icon2.setTexture(self_role );
 
-            for(let i=0;i<=3;i++) for(let j=1;j<=13;j++) deckContainer.push(`${card_name[i]}${j}`);
+            for(let i=0;i<=3;i++) for(let j=1;j<=13;j++) deckContainer1.push(`${card_name[i]}${j}`);
             var cardToRemove = `${card_name[ self_Attributes]}${self_point_max / 3 }`;
-            deckContainer.splice(deckContainer.indexOf(cardToRemove), 1);
+            deckContainer1.splice(deckContainer1.indexOf(cardToRemove), 1);
             scene.time.delayedCall(500, moveicon, [], this);
         }
     });
