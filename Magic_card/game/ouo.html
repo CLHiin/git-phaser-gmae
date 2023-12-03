@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="phaser.min.js"></script>
+    <script src="database.js"></script>
+    <style>
+        #web{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        #zone{
+            display: flex;
+            justify-content: center;
+            align-items: center; 
+            width: 1200px;
+            height: 600px;
+        }
+        #Information{
+            background-color: gray;
+            width: 200px;
+            height: 600px;
+            font-size: 18px;
+        }        
+        #game-container{
+            width : 800px;
+            height : 600px;
+            background-color: black;
+
+        }
+        strong{
+            font-size: 20px;
+            color: black;
+        }
+    </style>
+</head>
+<body id="web"><!--基礎物件-->
+    <div id="zone">
+        <div id="Information">
+            <h1>請登入</h1>
+            <form id="login-form" action="/login" method="post">
+                <div>
+                    <label for="playerName">玩家名稱：</label>
+                    <input type="text" id="playerName" name="playerName" required>
+                </div>
+                <div>
+                    <label for="gameCode">遊戲邀請代碼：</label>
+                    <input type="text" id="gameCode" name="gameCode" required>
+                </div>                
+                <div>
+                    <button type="submit">登入</button>
+                </div>
+            </form>
+        </div>
+        <div id="game-container"></div>
+        <div id="Information">
+            <table width="200" style="color: white;">
+                <tbody id="image-content"></tbody>
+                <tbody id="file-content"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+<body>
+    <script>//確認用戶登入
+        var game_license=false;
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // 獲取用戶名和密碼
+            const playerName = document.getElementById('playerName').value;
+            const gameCode = document.getElementById('gameCode').value;
+
+            // 發送 POST 請求到伺服器
+            fetch('/login', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ playerName, gameCode })
+            })
+            .then(function(response) { return response.json();} )
+            .then(function(data) {
+            if (data.token) {
+                // 登入成功，導向遊戲頁面或執行其他操作
+                alert('登入成功');
+                game_license = true;
+            } else {
+                // 登入失敗，顯示錯誤訊息
+                alert('登入失敗');
+            }
+            })
+            .catch(function(error) {
+            console.error('發生錯誤：', error);
+            });
+        });
+    </script>
+    <script>
+        
+        var graphics;
+        var config = {              //物件屬性
+            type: Phaser.AUTO,      //自動選擇為最好的渲染方式
+            width: 800,             //寬高設定
+            height: 600,
+            parent: 'game-container',
+            physics: {              //加入物理模塊
+                default: 'arcade',
+                arcade: {
+                    gravity: { y: 300 },
+                    debug: false
+                }
+            },
+            scene: {                
+                preload: preload,   //加載資料
+                create: create,     //創建畫面
+                update: update,     //刷新畫面
+            }
+        };
+
+        var Magic_poker={
+            //顏色
+            defaultColor:0xffffff,
+            hoverColor : 0x00ffff,
+            //頂部UI
+            Player_Attributes:0,
+            enemy_Attributes:2,
+            self_point:36,
+            self_point_max:36,
+            other_point:0,
+            other_point_max:36,
+            self_role:'dust_face2',
+            other_role:'fire_face2',
+            //遊戲數據區
+            portrait_name:['dust_face','water_face','fire_face','wind_face'],
+            card_name:['dust','water','fire','wind'],
+            card_form:{         //注意的卡片資訊
+                Attributes:1,   //卡片屬性 0土、1水、2火、3風
+                cardlevel:6,    //卡片等級 1~13
+                cardname:'water6',
+                cardtextline:6, //卡片文字列
+                cardmunber:19,
+            },
+            focus_card(){
+
+            },
+            drawstrokeRoundedRect(graphics, x, y, width, height, radius, color){
+                graphics.lineStyle(2, color);
+                graphics.strokeRoundedRect(x, y, width, height, radius);
+            },
+            drawzone(scene){
+                var rectGraphics = scene.add.graphics();
+                rectGraphics.fillStyle(0x444444, 1);
+                rectGraphics.fillRect(0, 0, 800, 600);
+                //繪製卡牌放置區
+                for (var row = 0; row < 2; row++) for (var col = 0; col < 5; col++) {
+                    var x = 163 + col * 100;
+                    var y = 200 + row * 156;
+                    var width = 64;
+                    var height = 96;
+                    var radius = 20;
+                    var graphics = scene.add.graphics();
+                    var defaultColor = this.defaultColor;
+                    var hoverColor = this.hoverColor;
+                    this.drawstrokeRoundedRect(graphics, x, y, width, height, radius, defaultColor);
+                    (function (graphics, x, y, width, height, radius) {
+                        graphics.setInteractive(new Phaser.Geom.Rectangle(x, y, width, height), Phaser.Geom.Rectangle.Contains);
+                        graphics.on('pointerover', function () {
+                            Magic_poker.drawstrokeRoundedRect(graphics, x, y, width, height, radius, hoverColor);
+                        }, this);
+                        graphics.on('pointerout', function () {
+                            Magic_poker.drawstrokeRoundedRect(graphics, x, y, width, height, radius, defaultColor);
+                        }, this);
+                    })(graphics, x, y, width, height, radius);
+                }
+            },
+            createPlayerUI(scene) {
+                var x = 50;
+                var y = 50;
+                var radius = 50;
+
+                var mask = scene.add.graphics();
+                mask.fillStyle(0xffffff);
+                mask.fillCircle(x, y, radius);
+
+
+                // 头像图片
+                var avatar1 = scene.add.image(0 , 0 , this.self_role );
+
+                avatar1.displayWidth =100;
+                avatar1.displayHeight=100;
+                avatar1.setOrigin(0, 0);
+                avatar1.setMask(mask.createGeometryMask());
+                //avatar1.setMask(mask);
+
+                var avatar2 = scene.add.image(config.width - x - radius , 0 , this.other_role );
+                avatar2.displayWidth =120;
+                avatar2.displayHeight=120;
+                avatar2.setOrigin(0, 0);
+                //蓋住空間
+                // var graphics = scene.add.graphics();
+                // graphics.beginPath();
+                // graphics.arc(x, y, radius, 0, Phaser.Math.PI2 / 4, false);
+                // graphics.lineTo(config.width - x - radius, y+radius);
+                // graphics.arc(config.width - x, y, radius, Phaser.Math.PI2 / 2, 3 * Phaser.Math.PI2 / 4, false);
+                // graphics.lineTo(x+radius, 0);
+                // graphics.lineTo(x+radius, y);
+                // graphics.closePath();
+                // graphics.fillStyle(0xf0f0f0,1)
+                // graphics.fillPath();
+                //點數表現
+                var HP_width =250;
+                var HP_height =30;
+                var interval =5;
+                var avatar1_x=80;
+                var avatar1_y=10;
+                var avatar2_x=420;
+                var avatar2_y=60;
+                //玩家血條框
+                var avatar1_HP = scene.add.graphics();
+                avatar1_HP.fillStyle(this.self_point < 10 ? 0xFF3333 : 0xFFFFFF, 1);
+                avatar1_HP.fillRoundedRect(avatar1_x, avatar1_y, HP_width, HP_height, 10);
+                avatar1_HP.fillStyle(0x000000, 1);
+                avatar1_HP.fillRoundedRect(avatar1_x + interval / 2, avatar1_y + interval / 2, HP_width - interval, HP_height - interval, 10);
+                //玩家紅色血條
+                var redWidth1 = (this.self_point / this.self_point_max) * (HP_width - interval);
+                var redX1 = avatar1_x + interval / 2; // 红色区域的 X 坐标
+                var redY1 = avatar1_y + interval / 2; // 红色区域的 Y 坐标
+                var redHP = scene.add.graphics();
+                redHP.fillStyle(0xff0000, 1); // 使用红色
+                redHP.fillRoundedRect(redX1, redY1, redWidth1, HP_height - interval, 10);
+                //玩家HP文本
+                var playerHPText = scene.add.text(avatar1_x + HP_width / 2, avatar1_y + HP_height / 2 + interval, `HP: ${this.self_point}/${this.self_point_max}`, {
+                    font: '18px Arial',
+                    fill: '#ffffff'
+                });
+                playerHPText.setOrigin(0.5, 1); // 设置文本锚点为底部中心
+                //敵人紅色血條
+                var avatar2_HP = scene.add.graphics();
+                avatar2_HP.fillStyle(this.other_point < 10 ? 0xFF3333 : 0x444444, 1);
+                avatar2_HP.fillRoundedRect(avatar2_x, avatar2_y, HP_width, HP_height, 10);
+                avatar2_HP.fillStyle(0x000000, 1);
+                avatar2_HP.fillRoundedRect(avatar2_x + interval / 2, avatar2_y + interval / 2, HP_width - interval, HP_height - interval, 10);
+                //敵人紅色血條
+                var redWidth2 = (this.other_point / this.other_point_max) * (HP_width - interval);
+                var redX2 = avatar2_x + interval / 2; // 红色区域的 X 坐标
+                var redY2 = avatar2_y + interval / 2; // 红色区域的 Y 坐标
+                var redHP = scene.add.graphics();
+                redHP.fillStyle(0xff0000, 1); // 使用红色
+                redHP.fillRoundedRect(redX2, redY2, redWidth2, HP_height - interval, 10);
+                //敵人HP文本
+                var enemyHPText = scene.add.text(avatar2_x + HP_width / 2, avatar2_y + HP_height / 2 + interval, `HP: ${this.other_point}/${this.other_point_max}`, {
+                    font: '18px Arial',
+                    fill: '#ffffff'
+                });
+                enemyHPText.setOrigin(0.5, 1);
+            },
+            drawcardform(){
+                var imageContent = document.getElementById('image-content');
+
+                var existingImage = imageContent.querySelector('img');
+                if (existingImage) existingImage.remove();
+
+                var img = document.createElement('img');
+                img.src = `assets/${Magic_poker.card_name[Magic_poker.card_form.Attributes]}-${Magic_poker.card_form.cardlevel}.png`;
+                img.width = 196;
+                img.height = 294;
+                imageContent.appendChild(img);
+
+                var fileContentElement = document.getElementById('file-content');
+                    fileContentElement.innerHTML = `
+                    <strong>名稱: </strong><p>&nbsp;&nbsp;&nbsp;&nbsp;${database[this.card_form.cardmunber].name}</p>
+                    <strong>描述: </strong><p>&nbsp;&nbsp;&nbsp;&nbsp;${database[this.card_form.cardmunber].content}</p>
+                    <strong>卡牌: </strong><p>&nbsp;&nbsp;&nbsp;&nbsp;${database[this.card_form.cardmunber].Attributes} - ${database[this.card_form.cardmunber].cardlevel}</p>
+                    `;
+            },
+            Adjustment(){
+                this.card_form.cardname = `${this.card_name[this.card_form.Attributes]}${this.card_form.cardlevel}`;
+                this.card_form.cardtextline = this.card_form.cardlevel + this.card_form.Attributes*13;
+                
+            },
+        }
+
+        //const socket = io('http://localhost:3000'); 
+        var game = new Phaser.Game(config);
+
+        function preload(){
+            for(let i=0;i<4;i++) for(let j=1;j<=3;j++)
+                this.load.image(`${Magic_poker.portrait_name[i]}${j}`,`assets/${Magic_poker.portrait_name[i]}${j}.png`)
+            for(let i=0;i<4;i++) for(let j=1;j<=13;j++)
+                this.load.image(`${Magic_poker.card_name[i]}${j}`,`assets/${Magic_poker.card_name[i]}-${j}.png`)
+        }
+
+        function create(){
+            Magic_poker.drawzone(this);
+            
+        }
+        
+        function update(){
+            Magic_poker.drawcardform();
+            Magic_poker.createPlayerUI(this);
+
+        }
+
+    </script>
+</body>
+</html>

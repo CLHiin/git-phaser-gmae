@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <script src="phaser.min.js"></script>
+    <script src="database.js"></script>
+    <script src="script copy.js"></script>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+<body id="web"><!--基礎物件-->
+    <div id="zone">
+        <div id="Information">
+            <h1>請登入</h1>
+            <form id="login-form" onsubmit="submitForm(event)">
+                <div>
+                    <label for="playerName">玩家名稱：</label>
+                    <input type="text" id="playerName" name="playerName" required>
+                </div>
+                <div>
+                    <label for="gameCode">遊戲邀請代碼：</label>
+                    <input type="text" id="gameCode" name="gameCode" required>
+                </div>                
+                <div>
+                    <button type="submit">登入</button>
+                </div>
+            </form>
+        </div>
+        <div id="game-container"></div>
+        <div id="Information">
+            <table style="color: white;">
+                <tbody id="image-content"></tbody>
+                <tbody id="file-content"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

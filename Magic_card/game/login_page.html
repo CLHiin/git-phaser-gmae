@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>登入頁面</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"></script>
+    <style>
+        body {
+            background-color: skyblue;          /* 设置背景颜色为天蓝色 */
+            font-family: Roboto;                /* 设置页面使用 Roboto 字体 */
+            display: flex;                      /* 设置为 Flex 布局 */
+            justify-content: center;            /* 水平居中对齐 */
+            align-items: center;                /* 垂直居中对齐 */
+        }                                   
+
+        .login {
+            background-color: #0b132b;          /* 设置登录框的背景颜色 */
+            box-shadow: 10px 10px 10px black; 	/* 设置阴影效果 */
+            color: red;                       	/* 设置文字颜色为红色 */
+            width: 400px;                       /* 设置登录框宽度 */
+            border-radius: 20px;                /* 设置边框圆角 */
+            font-size: 35px;                    /* 设置文字大小 */
+            text-align: center;                 /* 文字水平居中 */
+            padding: 40px;                      /* 设置内边距 */
+        }
+
+        .login input {
+            color: white;                     	/* 设置文字颜色为白色 */
+            margin: 40px auto;                  /* 上下 40px，左右居中 */
+            display: block;                     /* 显示为块级元素 */
+            font-size: 30px;                    /* 设置文字大小 */
+            border-radius: 20px;                /* 设置边框圆角 */
+            padding: 10px;                      /* 设置内边距 */
+            background: none;                   /* 背景透明 */
+        }
+
+        #input1,#input2 {
+            border: 2px solid skyblue;        	/* 设置边框样式和颜色 */
+            width: 220px;                       /* 设置输入框宽度 */
+        }
+
+        #input1:focus,#input2:focus {
+            border-color: lightcoral;           /* 设置聚焦时边框颜色为绿色 */
+            outline: none;                      /* 聚焦时移除边框外观 */
+            width: 250px;                       /* 聚焦时改变输入框宽度 */
+            transition: 0.5s;                   /* 添加过渡效果 */
+        }
+
+        #btn {
+            border: 2px solid green;            /* 设置按钮边框样式和颜色 */
+            color: gray;                      	/* 设置按钮文字颜色为灰色 */
+            width: 150px;                       /* 设置按钮宽度 */
+            cursor: pointer;                    /* 设置鼠标悬停时的光标形状为手型 */
+        }
+
+        #btn:hover {
+            background-color: lightgreen;       /* 鼠标悬停时按钮背景颜色变为绿色 */
+            transition: 0.5s;                   /* 添加过渡效果 */
+        }
+    </style>
+</head>
+<body>
+    <div class="login">
+        <h1>登入遊戲</h1>
+        <input type="text"     placeholder="輸入玩家名稱" id="input1"/>
+        <input type="password" placeholder="輸入相應密碼" id="input2"/>
+        <input type="submit"   value=      "登入"         id="btn"   />
+    </div>
+    <!-- <div id="zone">
+        <div id="Information">
+            <ul id="messages"></ul>
+            <div class="input-container">
+                <textarea id="inputMessage" rows="1" style="width: 200px;"></textarea>
+                <button id="sendButton">發送</button>
+            </div>
+        </div>
+        <div id="game-container"></div>
+        <div id="Information">
+            <table style="color: white;">
+                <tbody id="image-content"></tbody>
+                <tbody id="file-content"></tbody>
+            </table>
+        </div>
+    </div> -->
+    <script>
+        const socket = io();
+        const btn = document.getElementById("btn");
+        btn.addEventListener("click", () => {
+            const playerName = document.getElementById("input1").value;
+            const gameCode = document.getElementById("input2").value;
+            socket.emit('login', { playerName, gameCode });
+            
+        });
+        socket.on('login', (token) => {
+                 if (token > 0)window.location.href = 'game.html?id=' + socket.id;
+            else if (token==-1)alert('登入失敗，該帳戶正在被登錄中。');
+            else alert('登入失敗，請檢查你的輸入。');
+        });
+    </script>
+</body>
+
+</html>

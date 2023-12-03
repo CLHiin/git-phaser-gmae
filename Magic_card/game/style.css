@@ -1,0 +1,129 @@
+.login {
+    background-color: #0b132b;          /* 设置登录框的背景颜色 */
+    box-shadow: 10px 10px 10px black; 	/* 设置阴影效果 */
+    color: red;                       	/* 设置文字颜色为红色 */
+    width: 400px;                       /* 设置登录框宽度 */
+    border-radius: 20px;                /* 设置边框圆角 */
+    font-size: 35px;                    /* 设置文字大小 */
+    text-align: center;                 /* 文字水平居中 */
+    padding: 40px;                      /* 设置内边距 */
+}
+
+.login input {
+    color: white;                     	/* 设置文字颜色为白色 */
+    margin: 40px auto;                  /* 上下 40px，左右居中 */
+    display: block;                     /* 显示为块级元素 */
+    font-size: 30px;                    /* 设置文字大小 */
+    border-radius: 20px;                /* 设置边框圆角 */
+    padding: 10px;                      /* 设置内边距 */
+    background: none;                   /* 背景透明 */
+}
+
+#input1,#input2 {
+    border: 2px solid skyblue;        	/* 设置边框样式和颜色 */
+    width: 220px;                       /* 设置输入框宽度 */
+}
+
+#input1:focus,#input2:focus {
+    border-color: lightcoral;           /* 设置聚焦时边框颜色为绿色 */
+    outline: none;                      /* 聚焦时移除边框外观 */
+    width: 250px;                       /* 聚焦时改变输入框宽度 */
+    transition: 0.5s;                   /* 添加过渡效果 */
+}
+
+#btn {
+    border: 2px solid green;            /* 设置按钮边框样式和颜色 */
+    color: gray;                      	/* 设置按钮文字颜色为灰色 */
+    width: 150px;                       /* 设置按钮宽度 */
+    cursor: pointer;                    /* 设置鼠标悬停时的光标形状为手型 */
+}
+
+#btn:hover {
+    background-color: lightgreen;       /* 鼠标悬停时按钮背景颜色变为绿色 */
+    transition: 0.5s;                   /* 添加过渡效果 */
+}
+
+#web{
+    background-color: plum;          /* 设置背景颜色为天蓝色 */
+    font-family: Roboto;                /* 设置页面使用 Roboto 字体 */
+    display: flex;                      /* 设置为 Flex 布局 */
+    justify-content: center;            /* 水平居中对齐 */
+    align-items: center;                /* 垂直居中对齐 */
+
+}
+#zone{
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    width: 1240px;
+    height: 600px;
+}
+#Information{
+    background-color: gray;
+    width: 220px;
+    height: 600px;
+    font-size: 18px;
+}
+#messages {
+    list-style-type: none;
+    margin: 0;
+    background-color: skyblue;
+    padding: 10px; /* 添加内边距 */
+    overflow-y: auto; /* 添加滚动条 */
+    max-height: 300px; /* 设置最大高度，超出部分出现滚动条 */
+    border: 1px solid #ccc; /* 添加边框 */
+    width: 198px; /* 设置宽度 */
+    height: 300px; /* 设置宽度 */
+    word-wrap: break-word; /* 如果单词太长，允许单词内部断行 */
+    overflow-wrap: break-word; /* 处理中英文混排时的换行问题 */
+}
+
+#messages li {
+    padding: 5px 10px;
+    margin-bottom: 5px;
+    background-color: #f2f2f2;
+    border-radius: 8px;
+}
+
+#messages li:nth-child(odd) {
+    background-color: #e5e5e5;
+}
+
+#inputMessage {
+    padding: 8px;
+    font-size: 16px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    resize: none; /* 禁止调整输入框大小 */
+    overflow-y: auto; /* 当文本超出输入框高度时，显示滚动条 */
+    width: 200px; /* 设置输入框宽度 */
+    height: 38Px; /* 允许高度根据内容自动调整 */
+    white-space: normal; /* 允许文本换行显示 */
+    word-wrap: break-word; /* 如果单词太长，允许单词内部断行 */
+    overflow-wrap: break-word; /* 处理中英文混排时的换行问题 */
+}
+
+#sendButton {
+    padding: 8px 15px;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    background-color: #4CAF50;
+    color: white;
+    cursor: pointer;
+}
+
+#game-container{
+    width : 800px;
+    height : 600px;
+    background-color: black;
+
+}
+strong{
+    font-size: 20px;
+    color: black;
+    line-height: 0.8;
+}
+#content{
+    height: 90px;
+}
