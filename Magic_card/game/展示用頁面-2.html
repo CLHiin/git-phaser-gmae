@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>展示用頁面-2</title>
+    <link rel="stylesheet" href="style.css"/>
+</head>
+
+<body id="web"><!--基礎物件-->
+    <div id="zone">
+        <div id="Information">
+            <div class="tabs">
+                <button id="system-tab">系統通知</button>
+                <button id="public-tab">公開對話</button>
+                <button id="battle-tab">對戰對話</button>
+            </div>
+            <div class="list">
+                <ul id="system-messages" class="message-list" style="display:block;"></ul>
+                <ul id="public-messages" class="message-list" style="display: none;"></ul>
+                <ul id="battle-messages" class="message-list" style="display: none;"></ul>
+            </div>
+            <div class="input-container">
+                <textarea id="inputMessage" rows="1" data-target="system-messages"></textarea>
+                <button id="sendButton">發送</button>
+            </div>
+        </div>
+        <div id="game-container"></div>
+        <div id="Information">
+            <table style="color: white;">
+                <tbody id="image-content"></tbody>
+                <tbody id="file-content"></tbody>
+            </table>
+        </div>
+    </div>
+</body>
+</html>

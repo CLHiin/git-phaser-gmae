@@ -64,7 +64,33 @@
     height: 600px;
     font-size: 18px;
 }
-#messages {
+
+.tabs {
+    display: flex;
+    width: 220px;
+    height: 110px;
+    background-color: lightyellow;
+}
+
+.tabs button {
+    padding: 10px 20px;
+    margin: 0 1px; /* 加入距離 */
+    border: none;
+    cursor: pointer;
+    background-color: #4CAF50; /* 綠色底色 */
+    color: white;
+    font-size: 16px;
+    border-radius: 10px; /* 圓弧邊框 */
+}
+.tabs button.flash {
+    background-color: red; /* 設置閃爍時的背景色為紅色 */
+}
+/* 滑鼠懸停時的樣式 */
+.tabs button:hover {
+    background-color: green; /* 懸停時顏色變化 */
+}
+
+.list ul {
     list-style-type: none;
     margin: 0;
     background-color: skyblue;
@@ -78,14 +104,14 @@
     overflow-wrap: break-word; /* 处理中英文混排时的换行问题 */
 }
 
-#messages li {
+.list ul li {
     padding: 5px 10px;
     margin-bottom: 5px;
     background-color: #f2f2f2;
     border-radius: 8px;
 }
 
-#messages li:nth-child(odd) {
+.list ul li:nth-child(odd) {
     background-color: #e5e5e5;
 }
 
